@@ -5,7 +5,11 @@ For å få includes til å gi mening må struct Order ligge i queue system, burd
 
 Trenger vi max antall actions define, tror det blir 11 men må diskuteres
 
+Skal add_order kalle på calculate action, siden denne kunn skal skje når det trykkes på knapper?
 
 Rare feil kan dukke opp hvis man ikke kjører make clean
+
+//Notater til calculate:
+
 
 

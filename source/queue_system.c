@@ -7,21 +7,16 @@ Order order_array[MAX_NUMER_OF_ORDERS];
 
 
 void add_order(Order *order){
-
     Order *order_ptr=order_array;
     for(int i = 0;i < order_array_length; i++){
-
         if(order->floor==order_ptr->floor){
             if(order->order_type==order_ptr->order_type){
                 return;
             }
-            
         }
         order_ptr++;
-        
     }
     order_array[order_array_length].floor=order->floor;
-    printf("Added order at floor: %d\n",order_ptr->floor);
     order_array[order_array_length].order_type=order->order_type;
     order_array_length+=1;
     
@@ -52,4 +47,12 @@ void print_queue(){
         order_ptr++;
     }
     
+}
+
+void calculate_action_array(){
+    if(order_array_length==0){
+        return;
+    }
+
+
 }

@@ -48,6 +48,19 @@ void add_order(Order *order);
  */
 void print_queue();
 
+/**
+ * @brief Calculates the elevators actions and refreshes the action_list.
+ */
+
+void calculate_action_array();
+
+/**
+ * @brief Updates the order array, deletes all completed orders.
+ * @param state FSM current state.
+ */
+
+void update_order_array(int state);
+
 
 #endif
 
