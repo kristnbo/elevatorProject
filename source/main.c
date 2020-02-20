@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
-#include "hardware.h"
+#include "order_handler.h"
+
 
 static void clear_all_order_lights(){
     HardwareOrder order_types[3] = {
@@ -27,6 +28,10 @@ static void sigint_handler(int sig){
 
 int main(){
     int error = hardware_init();
+    
+    
+
+    
     if(error != 0){
         fprintf(stderr, "Unable to initialize hardware\n");
         exit(1);
@@ -39,26 +44,14 @@ int main(){
 
     hardware_command_movement(HARDWARE_MOVEMENT_UP);
 
-    while(1){
-        if(hardware_read_stop_signal()){
-            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-            break;
-        }
 
-        if(hardware_read_floor_sensor(0)){
-            hardware_command_movement(HARDWARE_MOVEMENT_UP);
-	    hardware_command_floor_indicator_on(0);
-        }
-        if(hardware_read_floor_sensor(HARDWARE_NUMBER_OF_FLOORS - 1)){
-            hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-	    hardware_command_floor_indicator_on(3);
-        }
-        if(hardware_read_floor_sensor(2)){
-	    hardware_command_floor_indicator_on(2);
-        }
-        if(hardware_read_floor_sensor(1)){
-	    hardware_command_floor_indicator_on(1);
-        }
+ 
+
+    while(1){
+        check_for_order();
+        print_queue();
+
+
 
         /* All buttons must be polled, like this: */
         for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){

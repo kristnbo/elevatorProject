@@ -1,0 +1,75 @@
+\hypertarget{queue__system_8h}{}\section{source/queue\+\_\+system.h File Reference}
+\label{queue__system_8h}\index{source/queue\+\_\+system.\+h@{source/queue\+\_\+system.\+h}}
+
+
+A system for keeping track of all current orders. The system also calculates the elevators movements based on this.  
+
+
+{\ttfamily \#include \char`\"{}hardware.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+Include dependency graph for queue\+\_\+system.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structOrder}{Order}
+\begin{DoxyCompactList}\small\item\em Common type for orders. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{queue__system_8h_afee8835771bbda01feb84c69efe502d8}\label{queue__system_8h_afee8835771bbda01feb84c69efe502d8}} 
+\#define {\bfseries Q\+U\+E\+U\+E\+\_\+\+S\+Y\+S\+T\+E\+M\+\_\+H}
+\item 
+\mbox{\Hypertarget{queue__system_8h_a039e391a7cd1df2739cea761401c561e}\label{queue__system_8h_a039e391a7cd1df2739cea761401c561e}} 
+\#define {\bfseries M\+A\+X\+\_\+\+N\+U\+M\+E\+R\+\_\+\+O\+F\+\_\+\+O\+R\+D\+E\+RS}~10
+\item 
+\mbox{\Hypertarget{queue__system_8h_a8adf1b72111700ab8a38abdbc4d22c04}\label{queue__system_8h_a8adf1b72111700ab8a38abdbc4d22c04}} 
+\#define {\bfseries M\+A\+X\+\_\+\+N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+A\+C\+T\+I\+O\+NS}~15
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{queue__system_8h_a72bb837d293ee0211430def860d98075}\label{queue__system_8h_a72bb837d293ee0211430def860d98075}} 
+typedef struct \hyperlink{structOrder}{Order} \hyperlink{queue__system_8h_a72bb837d293ee0211430def860d98075}{Order}
+\begin{DoxyCompactList}\small\item\em Common type for orders. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{queue__system_8h_a738c57c092eaae0b4e2e663d8cce93d5}\label{queue__system_8h_a738c57c092eaae0b4e2e663d8cce93d5}} 
+void \hyperlink{queue__system_8h_a738c57c092eaae0b4e2e663d8cce93d5}{queue\+\_\+init} ()
+\begin{DoxyCompactList}\small\item\em Allocates all memory needed for the order and action arrays. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{queue__system_8h_a58f6bdffd9825a8d3e1bfa8663d56a57}\label{queue__system_8h_a58f6bdffd9825a8d3e1bfa8663d56a57}} 
+void \hyperlink{queue__system_8h_a58f6bdffd9825a8d3e1bfa8663d56a57}{add\+\_\+order} (\hyperlink{structOrder}{Order} $\ast$order)
+\begin{DoxyCompactList}\small\item\em Adds an order to the order array. First checks if the order is already in the array. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{queue__system_8h_a3b5e2fef85d5401a65d922ea5b1074bf}\label{queue__system_8h_a3b5e2fef85d5401a65d922ea5b1074bf}} 
+void \hyperlink{queue__system_8h_a3b5e2fef85d5401a65d922ea5b1074bf}{print\+\_\+queue} ()
+\begin{DoxyCompactList}\small\item\em Prints all orders with floor and type. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{hardware_8h_a2167c399a24df296afc432bcb88228af}{Hardware\+Movement} \hyperlink{queue__system_8h_adf599805a4d5ea67aea18582b09abfe9}{action\+\_\+array} \mbox{[}M\+A\+X\+\_\+\+N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+A\+C\+T\+I\+O\+NS\mbox{]}
+\begin{DoxyCompactList}\small\item\em An array for keeping track of all active orders. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A system for keeping track of all current orders. The system also calculates the elevators movements based on this. 
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{queue__system_8h_adf599805a4d5ea67aea18582b09abfe9}\label{queue__system_8h_adf599805a4d5ea67aea18582b09abfe9}} 
+\index{queue\+\_\+system.\+h@{queue\+\_\+system.\+h}!action\+\_\+array@{action\+\_\+array}}
+\index{action\+\_\+array@{action\+\_\+array}!queue\+\_\+system.\+h@{queue\+\_\+system.\+h}}
+\subsubsection{\texorpdfstring{action\+\_\+array}{action\_array}}
+{\footnotesize\ttfamily \hyperlink{hardware_8h_a2167c399a24df296afc432bcb88228af}{Hardware\+Movement} action\+\_\+array\mbox{[}M\+A\+X\+\_\+\+N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+A\+C\+T\+I\+O\+NS\mbox{]}}
+
+
+
+An array for keeping track of all active orders. 
+
+An array for keeping track of all planned future actions. 
+
+Definition at line 32 of file queue\+\_\+system.\+h.
+

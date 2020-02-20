@@ -1,0 +1,11 @@
+//Simen
+
+
+For å få includes til å gi mening må struct Order ligge i queue system, burde order_handler og queue system være samme modul?
+
+Trenger vi max antall actions define, tror det blir 11 men må diskuteres
+
+
+Rare feil kan dukke opp hvis man ikke kjører make clean
+
+

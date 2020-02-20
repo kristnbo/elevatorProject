@@ -26,7 +26,7 @@ enum \hyperlink{hardware_8h_a2167c399a24df296afc432bcb88228af}{Hardware\+Movemen
 enum \hyperlink{hardware_8h_a796a8de8ce0ae769d7dbd3327a7bdbe7}{Hardware\+Order} \{ {\bfseries H\+A\+R\+D\+W\+A\+R\+E\+\_\+\+O\+R\+D\+E\+R\+\_\+\+UP}, 
 {\bfseries H\+A\+R\+D\+W\+A\+R\+E\+\_\+\+O\+R\+D\+E\+R\+\_\+\+I\+N\+S\+I\+DE}, 
 {\bfseries H\+A\+R\+D\+W\+A\+R\+E\+\_\+\+O\+R\+D\+E\+R\+\_\+\+D\+O\+WN}
- \}\begin{DoxyCompactList}\small\item\em Order type used in {\ttfamily hardware\+\_\+read\+\_\+order} and in {\ttfamily hardware\+\_\+command\+\_\+order\+\_\+light}. \end{DoxyCompactList}
+ \}\begin{DoxyCompactList}\small\item\em \hyperlink{structOrder}{Order} type used in {\ttfamily hardware\+\_\+read\+\_\+order} and in {\ttfamily hardware\+\_\+command\+\_\+order\+\_\+light}. \end{DoxyCompactList}
 \end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -41,6 +41,8 @@ int \hyperlink{hardware_8h_a459fe57a3ee4bc2a28e8a15b2ab14c2d}{hardware\+\_\+read
 \begin{DoxyCompactList}\small\item\em Polls the hardware for the current obstruction signal. \end{DoxyCompactList}\item 
 int \hyperlink{hardware_8h_ab048489e6302bb5604aad753f2d7d501}{hardware\+\_\+read\+\_\+floor\+\_\+sensor} (int floor)
 \begin{DoxyCompactList}\small\item\em Polls the floor sensor for the given {\ttfamily floor}. \end{DoxyCompactList}\item 
+int \hyperlink{hardware_8h_a7ba05c4794176f8fcfcd1efb90564326}{hardware\+\_\+get\+\_\+floor} ()
+\begin{DoxyCompactList}\small\item\em Polls all floor sensors. \end{DoxyCompactList}\item 
 int \hyperlink{hardware_8h_a87917f3aa093fb46ca821a400d011ee8}{hardware\+\_\+read\+\_\+order} (int floor, \hyperlink{hardware_8h_a796a8de8ce0ae769d7dbd3327a7bdbe7}{Hardware\+Order} order\+\_\+type)
 \begin{DoxyCompactList}\small\item\em Polls the hardware for the status of orders from floor {\ttfamily floor} of type {\ttfamily order\+\_\+type}. \end{DoxyCompactList}\item 
 void \hyperlink{hardware_8h_a80d99ddaa8e7b58c9a88b60ea553c1b6}{hardware\+\_\+command\+\_\+door\+\_\+open} (int door\+\_\+open)
@@ -143,6 +145,19 @@ Sets the light in the panel stop button.
 {\em on} & A truthy value (non-\/zero) to turn the light on; 0 to turn it off. \\
 \hline
 \end{DoxyParams}
+\mbox{\Hypertarget{hardware_8h_a7ba05c4794176f8fcfcd1efb90564326}\label{hardware_8h_a7ba05c4794176f8fcfcd1efb90564326}} 
+\index{hardware.\+h@{hardware.\+h}!hardware\+\_\+get\+\_\+floor@{hardware\+\_\+get\+\_\+floor}}
+\index{hardware\+\_\+get\+\_\+floor@{hardware\+\_\+get\+\_\+floor}!hardware.\+h@{hardware.\+h}}
+\subsubsection{\texorpdfstring{hardware\+\_\+get\+\_\+floor()}{hardware\_get\_floor()}}
+{\footnotesize\ttfamily int hardware\+\_\+get\+\_\+floor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Polls all floor sensors. 
+
+\begin{DoxyReturn}{Returns}
+value of floor (zero-\/based) otherwise -\/1; 
+\end{DoxyReturn}
 \mbox{\Hypertarget{hardware_8h_a054b8fb8768311d46be58d6a4890d771}\label{hardware_8h_a054b8fb8768311d46be58d6a4890d771}} 
 \index{hardware.\+h@{hardware.\+h}!hardware\+\_\+init@{hardware\+\_\+init}}
 \index{hardware\+\_\+init@{hardware\+\_\+init}!hardware.\+h@{hardware.\+h}}

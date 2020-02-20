@@ -119,6 +119,15 @@ int hardware_read_floor_sensor(int floor){
     return io_read_bit(floor_bit);
 }
 
+int hardware_get_floor(){
+    for(int i=0;i<HARDWARE_NUMBER_OF_FLOORS;i++){
+        if(hardware_read_floor_sensor(i)){
+            return i;
+        }
+    }
+    return -1;
+}
+
 int hardware_read_order(int floor, HardwareOrder order_type){
     if(!hardware_legal_floor(floor, order_type)){
         return 0;

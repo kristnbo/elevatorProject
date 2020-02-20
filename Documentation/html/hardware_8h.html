@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Heislab Simen og Kristian: source/hardware.h File Reference</title>
+<title>Elevator lab Simen &amp; Kristian: source/hardware.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Heislab Simen og Kristian
+   <div id="projectname">Elevator lab Simen &amp; Kristian
    </div>
   </td>
  </tr>
@@ -77,7 +77,8 @@ $(function() {
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="hardware_8h__dep__incl.png" border="0" usemap="#source_2hardware_8hdep" alt=""/></div>
-<!-- MAP 0 -->
+<map name="source_2hardware_8hdep" id="source_2hardware_8hdep">
+</map>
 </div>
 </div>
 <p><a href="hardware_8h_source.html">Go to the source code of this file.</a></p>
@@ -99,7 +100,7 @@ Enumerations</h2></td></tr>
 <tr class="memitem:a796a8de8ce0ae769d7dbd3327a7bdbe7"><td class="memItemLeft" align="right" valign="top"><a id="a796a8de8ce0ae769d7dbd3327a7bdbe7"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hardware_8h.html#a796a8de8ce0ae769d7dbd3327a7bdbe7">HardwareOrder</a> { <b>HARDWARE_ORDER_UP</b>, 
 <b>HARDWARE_ORDER_INSIDE</b>, 
 <b>HARDWARE_ORDER_DOWN</b>
- }<tr class="memdesc:a796a8de8ce0ae769d7dbd3327a7bdbe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Order type used in <code>hardware_read_order</code> and in <code>hardware_command_order_light</code>. <br /></td></tr>
+ }<tr class="memdesc:a796a8de8ce0ae769d7dbd3327a7bdbe7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structOrder.html" title="Common type for orders. ">Order</a> type used in <code>hardware_read_order</code> and in <code>hardware_command_order_light</code>. <br /></td></tr>
 </td></tr>
 <tr class="separator:a796a8de8ce0ae769d7dbd3327a7bdbe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -120,6 +121,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ab048489e6302bb5604aad753f2d7d501"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hardware_8h.html#ab048489e6302bb5604aad753f2d7d501">hardware_read_floor_sensor</a> (int floor)</td></tr>
 <tr class="memdesc:ab048489e6302bb5604aad753f2d7d501"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls the floor sensor for the given <code>floor</code>.  <a href="#ab048489e6302bb5604aad753f2d7d501">More...</a><br /></td></tr>
 <tr class="separator:ab048489e6302bb5604aad753f2d7d501"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ba05c4794176f8fcfcd1efb90564326"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hardware_8h.html#a7ba05c4794176f8fcfcd1efb90564326">hardware_get_floor</a> ()</td></tr>
+<tr class="memdesc:a7ba05c4794176f8fcfcd1efb90564326"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls all floor sensors.  <a href="#a7ba05c4794176f8fcfcd1efb90564326">More...</a><br /></td></tr>
+<tr class="separator:a7ba05c4794176f8fcfcd1efb90564326"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87917f3aa093fb46ca821a400d011ee8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hardware_8h.html#a87917f3aa093fb46ca821a400d011ee8">hardware_read_order</a> (int floor, <a class="el" href="hardware_8h.html#a796a8de8ce0ae769d7dbd3327a7bdbe7">HardwareOrder</a> order_type)</td></tr>
 <tr class="memdesc:a87917f3aa093fb46ca821a400d011ee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls the hardware for the status of orders from floor <code>floor</code> of type <code>order_type</code>.  <a href="#a87917f3aa093fb46ca821a400d011ee8">More...</a><br /></td></tr>
 <tr class="separator:a87917f3aa093fb46ca821a400d011ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,8 +171,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="hardware_8c_source.html#l00139">139</a> of file <a class="el" href="hardware_8c_source.html">hardware.c</a>.</p>
-
 </div>
 </div>
 <a id="a407a6ec035ba357de6aa0fbe55501d1e"></a>
@@ -196,8 +198,6 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section warning"><dt>Warning</dt><dd>Owing to peculiarities in the hardware construction, there will always be one indicator active. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="hardware_8c_source.html#l00148">148</a> of file <a class="el" href="hardware_8c_source.html">hardware.c</a>.</p>
-
 </div>
 </div>
 <a id="a01de081ef0510a111053c18cd31afa27"></a>
@@ -223,8 +223,6 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-<p class="definition">Definition at line <a class="el" href="hardware_8c_source.html#l00070">70</a> of file <a class="el" href="hardware_8c_source.html">hardware.c</a>.</p>
 
 </div>
 </div>
@@ -270,8 +268,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="hardware_8c_source.html#l00173">173</a> of file <a class="el" href="hardware_8c_source.html">hardware.c</a>.</p>
-
 </div>
 </div>
 <a id="aa75b3ac17f72b25946414f48d0063a10"></a>
@@ -298,7 +294,25 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="hardware_8c_source.html#l00164">164</a> of file <a class="el" href="hardware_8c_source.html">hardware.c</a>.</p>
+</div>
+</div>
+<a id="a7ba05c4794176f8fcfcd1efb90564326"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ba05c4794176f8fcfcd1efb90564326">&#9670;&nbsp;</a></span>hardware_get_floor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int hardware_get_floor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Polls all floor sensors. </p>
+<dl class="section return"><dt>Returns</dt><dd>value of floor (zero-based) otherwise -1; </dd></dl>
 
 </div>
 </div>
@@ -319,8 +333,6 @@ Functions</h2></td></tr>
 
 <p>Initializes the elevator control hardware. Must be called once before other calls to the elevator hardware driver. </p>
 <dl class="section return"><dt>Returns</dt><dd>0 on success. Non-zero for failure. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="hardware_8c_source.html#l00046">46</a> of file <a class="el" href="hardware_8c_source.html">hardware.c</a>.</p>
 
 </div>
 </div>
@@ -349,8 +361,6 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 if the elevator is at <code>floor</code>, otherwise 0; </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="hardware_8c_source.html#l00096">96</a> of file <a class="el" href="hardware_8c_source.html">hardware.c</a>.</p>
-
 </div>
 </div>
 <a id="a459fe57a3ee4bc2a28e8a15b2ab14c2d"></a>
@@ -370,8 +380,6 @@ Functions</h2></td></tr>
 
 <p>Polls the hardware for the current obstruction signal. </p>
 <dl class="section return"><dt>Returns</dt><dd>1 if the obstruction signal is high; 0 if it is low. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="hardware_8c_source.html#l00092">92</a> of file <a class="el" href="hardware_8c_source.html">hardware.c</a>.</p>
 
 </div>
 </div>
@@ -411,8 +419,6 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>1 if the combination of <code>floor</code> and <code>order_type</code> is being requested, otherwise 0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="hardware_8c_source.html#l00122">122</a> of file <a class="el" href="hardware_8c_source.html">hardware.c</a>.</p>
-
 </div>
 </div>
 <a id="a4a77b27c86675c00b513db3445966804"></a>
@@ -432,8 +438,6 @@ Functions</h2></td></tr>
 
 <p>Polls the hardware for the current stop signal. </p>
 <dl class="section return"><dt>Returns</dt><dd>1 if the stop signal is high; 0 if it is low. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="hardware_8c_source.html#l00088">88</a> of file <a class="el" href="hardware_8c_source.html">hardware.c</a>.</p>
 
 </div>
 </div>
