@@ -92,10 +92,14 @@ void print_queue(){
             break;
         }
         if(order_ptr->active){
-            printf(" is \t ACTIVE");
+            printf(" is \t ");
+            printf("\033[0;32m ACTIVE\n");
+            printf("\033[0m");
         }
         else{
-            printf(" is \t DECATIVATED");
+            printf(" is \t ");
+            printf("\033[0;31m DECTIVATED\n");
+            printf("\033[0m");
         }
         printf("\n");
         order_ptr++;

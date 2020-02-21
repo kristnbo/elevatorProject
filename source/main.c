@@ -106,7 +106,7 @@ int main(){
             break;
         }
         check_for_order();
-        //print_queue();
+        print_queue();
 
 
 
