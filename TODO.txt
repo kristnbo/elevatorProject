@@ -9,10 +9,29 @@ Skal add_order kalle på calculate action, siden denne kunn skal skje når det t
 
 Rare feil kan dukke opp hvis man ikke kjører make clean
 
+Order array skal initialiseres finere, med en ignore*antall
+
 //Notater til calculate:
+Genererer en copy av alle ordre, denne kopien jobbes gjennom
 Kan det lønne seg å ha en variabl aktiv i struct order som kan settes, slik at dersom
 den er høy skal den tas hensyn til, ellers ikke. Er surrete å legge til og 
 fjerne fra array ettersom det ikke er standard 
 Må da ha en queue init()
 
+Funker ikke med å fylle action med 0, så må lage en state ignore
+
 MAX_NUMBER_ORDERS bør fjere max fra den
+order_array_length er foreldet
+update_order_array er jo get next action
+
+//Variabler jeg er misfornøyd med
+floor_lowest
+floor_highest
+
+//Spørsmål 
+hvordan skal order og action array dokumenteres, de ligger kun i c-fil
+Kolbjørn sa FSM burde ligge i main, men queue_system trenger å kjenne til
+enum state. men kan ikke inkludere main.c, what to do?
+
+//magic command
+wget -O- www.itk.ntnu.no/heis.sh| sh

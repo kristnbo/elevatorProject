@@ -18,6 +18,25 @@ Order order_array[MAX_NUMER_OF_ORDERS]=
     
 };
 
+State action_array[MAX_NUMBER_OF_ACTIONS]=
+{
+ IDLE,
+ UP,
+ IDLE,
+ DOWN,
+ IDLE,
+ IGNORE,
+ IGNORE,
+ IGNORE,
+ IGNORE,
+ IGNORE,
+ IGNORE,
+ IGNORE,
+ IGNORE,
+ IGNORE,
+ IGNORE
+ };
+
 
 
 //Add order function before active variable was added
@@ -63,7 +82,7 @@ void print_queue(){
             printf(" with order type Down");
             break;
         case HARDWARE_ORDER_UP:
-            printf(" with order type Up");
+            printf(" with order type Up   ");
             break;
         case HARDWARE_ORDER_INSIDE:
             printf(" with order type Inside");
@@ -73,10 +92,10 @@ void print_queue(){
             break;
         }
         if(order_ptr->active){
-            printf(" is ACTIVE");
+            printf(" is \t ACTIVE");
         }
         else{
-            printf(" is DECATIVATED");
+            printf(" is \t DECATIVATED");
         }
         printf("\n");
         order_ptr++;
@@ -84,10 +103,35 @@ void print_queue(){
     
 }
 
-void calculate_action_array(){
-    if(order_array_length==0){
-        return;
+void calculate_action_array(State state, State last_state, int current_floor){
+    Order order_array_copy[MAX_NUMER_OF_ORDERS];
+    int floor_highest;
+    int floor_lowest;
+    for(int i=0;i<MAX_NUMER_OF_ORDERS;i++){
+        order_array_copy[i]=order_array[i];
     }
+    for(Order* o=order_array_copy;o<&order_array_copy[MAX_NUMER_OF_ORDERS];o++){
+        if(o->active){
+
+            if(o->floor>floor_highest){
+                floor_highest=o->floor;
+            }
+            if(o->floor<floor_lowest){
+                floor_lowest=o->floor;
+            }
+        }
+    }
+}
+
+State request_action(){
+  for(int i =0;i<MAX_NUMBER_OF_ACTIONS;i++){
+      if(action_array[i]!=IGNORE){
+          State return_value=action_array[i];
+          action_array[i]=IGNORE;
+          return return_value;
+      }
+  }  
+  return WAITING;
 
 
 }

@@ -23,15 +23,16 @@ typedef struct Order {
 
 
 /**
- * @brief An array for keeping track of all active orders.
+ * @brief The state type found in main
  */
-
-
-/**
- * @brief An array for keeping track of all planned future actions.
- */
-HardwareMovement action_array[MAX_NUMBER_OF_ACTIONS];
-
+typedef enum {
+    UP,
+    DOWN,
+    IDLE,
+    WAITING,
+    EMERGENCY_STOP,
+    IGNORE
+} State;
 
 
 
@@ -42,7 +43,7 @@ HardwareMovement action_array[MAX_NUMBER_OF_ACTIONS];
 void add_order(Order *order);
 
 /**
- * @brief Prints all orders with floor and type.
+ * @brief Prints all orders with floor and type, and shows wether they are active or not.
  */
 void print_queue();
 
@@ -50,14 +51,14 @@ void print_queue();
  * @brief Calculates the elevators actions and refreshes the action_list.
  */
 
-void calculate_action_array();
+void calculate_action_array(State state, State last_state, int current_floor);
 
 /**
- * @brief Updates the order array, deletes all completed orders.
+ * @brief Fetches next action, and updates the order array by deleting all completed orders.
  * @param state FSM current state.
  */
 
-void update_order_array(int state);
+State request_action();
 
 
 #endif

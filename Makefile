@@ -1,4 +1,4 @@
-SOURCES := main.c queue_system.c order_handler.c
+SOURCES := main.c queue_system.c order_handler.c timer.c
 
 SOURCE_DIR := source
 BUILD_DIR := build
