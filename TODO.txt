@@ -12,6 +12,7 @@ Rare feil kan dukke opp hvis man ikke kjører make clean
 Order array skal initialiseres finere, med en ignore*antall
 
 //Notater til calculate:
+MÅ ALLTID SJEKKE AT SISTE ER IDLE, EVT SETTE DEN TIL DET
 Genererer en copy av alle ordre, denne kopien jobbes gjennom
 Kan det lønne seg å ha en variabl aktiv i struct order som kan settes, slik at dersom
 den er høy skal den tas hensyn til, ellers ikke. Er surrete å legge til og 
@@ -27,6 +28,9 @@ update_order_array er jo get next action
 //Variabler jeg er misfornøyd med
 floor_lowest
 floor_highest
+add_order (burde være order_add)
+remove_order
+
 
 //Spørsmål 
 hvordan skal order og action array dokumenteres, de ligger kun i c-fil

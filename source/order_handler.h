@@ -15,5 +15,5 @@
  *
  * @return 1 if the stop signal is high; 0 if it is low.
  */
-void check_for_order();
+int check_for_order();
 

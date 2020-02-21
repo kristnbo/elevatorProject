@@ -43,7 +43,7 @@ typedef enum {
 */
 State state=UP;
 State last_state;
-int current_floor=-1;
+int current_floor=1;
 
 
 
@@ -66,7 +66,15 @@ int main(){
     //hardware_command_movement(HARDWARE_MOVEMENT_UP);
 
 
- 
+    while (1)
+    {
+    if(check_for_order()){
+            calculate_action_array(state,last_state,current_floor);
+        }
+    print_queue();
+    print_actions();
+    }
+    
     
     while(1){
         
@@ -94,6 +102,7 @@ int main(){
             break;
         case IDLE:
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+            clear_order(current_floor);
             break;
         case EMERGENCY_STOP:
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
@@ -105,8 +114,11 @@ int main(){
         default:
             break;
         }
-        check_for_order();
+        if(check_for_order()){
+            calculate_action_array(state,last_state,current_floor);
+        }
         print_queue();
+        print_actions();
 
 
 
