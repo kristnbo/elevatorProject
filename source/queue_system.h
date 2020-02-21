@@ -18,6 +18,7 @@
 typedef struct Order {
     int floor;
     HardwareOrder order_type;
+    int active;
 }Order; 
 
 
@@ -31,10 +32,7 @@ typedef struct Order {
  */
 HardwareMovement action_array[MAX_NUMBER_OF_ACTIONS];
 
-/**
- * @brief Allocates all memory needed for the order and action arrays.
- */
-void queue_init();
+
 
 
 /**

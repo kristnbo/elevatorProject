@@ -49,7 +49,7 @@ int main(){
 
     while(1){
         check_for_order();
-        print_queue();
+        //print_queue();
 
 
 

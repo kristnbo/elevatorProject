@@ -8,7 +8,7 @@ void check_for_order(){
             new_order.floor=i;
             new_order.order_type=HARDWARE_ORDER_UP;
             add_order(&new_order);
-            
+            printf("Order recieved \n");
            
         }
         if(hardware_read_order(i,HARDWARE_ORDER_DOWN)){

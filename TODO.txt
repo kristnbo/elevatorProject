@@ -10,6 +10,9 @@ Skal add_order kalle på calculate action, siden denne kunn skal skje når det t
 Rare feil kan dukke opp hvis man ikke kjører make clean
 
 //Notater til calculate:
+Kan det lønne seg å ha en variabl aktiv i struct order som kan settes, slik at dersom
+den er høy skal den tas hensyn til, ellers ikke. Er surrete å legge til og 
+fjerne fra array ettersom det ikke er standard 
+Må da ha en queue init()
 
-
-
+MAX_NUMBER_ORDERS bør fjere max fra den
