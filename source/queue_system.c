@@ -127,6 +127,13 @@ void calculate_action_array(State state, State last_state, int current_floor){
     Order order_array_copy[MAX_NUMBER_OF_ORDERS];
     int floor_highest;
     int floor_lowest;
+    for(int i=0;i<MAX_NUMBER_OF_ORDERS;i++){
+        if(order_array[i].active){
+            floor_lowest=order_array[i].floor;
+            floor_highest=order_array[i].floor;
+            break;
+            }
+    }
     int num_actions=0;
     for(int i=0;i<MAX_NUMBER_OF_ORDERS;i++){
         order_array_copy[i]=order_array[i];
@@ -142,75 +149,99 @@ void calculate_action_array(State state, State last_state, int current_floor){
             }
         }
     }
-    //Hvis vi er på vei opp
-    if(state!=DOWN && last_state!=DOWN){
-        for(int f=current_floor;f<floor_highest;f++){
-            int stopped=0;
-            for(int i=3*f;i<3*f+3;i++){
-                if(order_array_copy[i].active && order_array_copy[i].order_type!=HARDWARE_ORDER_DOWN){
-                    action_array[num_actions]=IDLE;
+    printf("Highest: %d\n",floor_highest+1);
+    printf("Current: %d\n",current_floor+1);
+    //Hvis vi må oppover først, da blir lengste mulige opp-ned-opp
+    if(state!=DOWN && last_state!=DOWN && floor_highest>current_floor){
+
+        if(floor_highest-current_floor>1){
+        //Siden det er etasjer mellom
+        //der du er og dit du skal
+        //må du sjekke om du må stoppe noe sted på veien
+            for(int f=current_floor+1;f<floor_highest;f++){
+                printf("Checking floor: %d\n",f+1);
+                int stopped = 0;
+                for(int i=0;i<3;i++){
+                    if(order_array_copy[3*f+i].active&&order_array_copy[3*f+i].order_type!=HARDWARE_ORDER_DOWN){
+                        action_array[num_actions]=IGNORE;
+                        num_actions+=1;
+                        action_array[num_actions]=IDLE;
+                        num_actions+=1;
+                        action_array[num_actions]=UP;
+                        num_actions+=1;
+                        remove_order(f,order_array_copy);
+                        stopped =1;
+                        printf("Should stop at floor: %d\n",f+1);
+                    }
+                }
+                if(!stopped){
+                    action_array[num_actions]=IGNORE;
                     num_actions+=1;
                     action_array[num_actions]=UP;
                     num_actions+=1;
-                    remove_order(f,order_array_copy);
-                    stopped=1;
                 }
             }
-            if(!stopped){
-                action_array[num_actions]=UP;
-                num_actions+=1;
-                }
+            printf("Should stop at: %d\n", floor_highest+1);
+            action_array[num_actions]=IDLE;
+            num_actions+=1;
+            action_array[num_actions]=DOWN;
+            num_actions+=1;
+            remove_order(floor_highest,order_array_copy);
+
         }
-        action_array[num_actions]=IDLE;
-        num_actions+=1;
-        action_array[num_actions]=DOWN;
-        for(int f=floor_highest;f>floor_lowest;f--){
-            int stopped=0;
-            for(int i=3*f;i>3*f+3;i++){
-                if(order_array_copy[i].active && order_array_copy[i].order_type!=HARDWARE_ORDER_UP){
+        else{
+            //Skjønner ikke hvorfor denne ignoren trengs, men funker
+            action_array[num_actions]=IGNORE;
+            num_actions+=1;
+            action_array[num_actions]=IDLE;
+            num_actions+=1;
+            action_array[num_actions]=DOWN;
+            num_actions+=1;
+        }
+        //Nå har du vært så høyt du skal, nå må du så lavt du skal,
+        //Men må igjen sjekke om du skal stoppe på veien
+        for(int f=floor_highest-1;f>floor_lowest;f--){
+            int stopped = 0;
+            for(int i=0;i<3;i++){
+                if(order_array_copy[3*f+i].active&&order_array_copy[3*f+i].order_type!=HARDWARE_ORDER_UP){
+                    action_array[num_actions]=IGNORE;
+                    num_actions+=1;
                     action_array[num_actions]=IDLE;
                     num_actions+=1;
                     action_array[num_actions]=DOWN;
                     num_actions+=1;
                     remove_order(f,order_array_copy);
-                    stopped=1;
+                    stopped =1;
+                    printf("Should stop at floor: %d\n",f+1);
+                    printf("Lowest: %d",floor_lowest);
                 }
             }
             if(!stopped){
+                action_array[num_actions]=IGNORE;
+                num_actions+=1;
                 action_array[num_actions]=DOWN;
                 num_actions+=1;
-                }
-        }
-        action_array[num_actions]=IDLE;
-        num_actions+=1;
-        action_array[num_actions]=UP;
-        for(int f=floor_lowest;f<current_floor;f++){
-            int stopped=0;
-            for(int i=3*f;i>3*f+3;i++){
-                if(order_array_copy[i].active){
-                    action_array[num_actions]=IDLE;
-                    num_actions+=1;
-                    action_array[num_actions]=UP;
-                    num_actions+=1;
-                    remove_order(f,order_array_copy);
-                    stopped=1;
-                }
             }
-            if(!stopped){
+        }
+        printf("Should stop at: %d\n", floor_highest+1);
+        for(int i=0;i<MAX_NUMBER_OF_ORDERS;i++){
+            if(order_array_copy[i].active){
+                action_array[num_actions]=IDLE;
+                num_actions+=1;
                 action_array[num_actions]=UP;
                 num_actions+=1;
-                }
+                break;
+            }
         }
-       action_array[num_actions-1]=IGNORE;
 
+        //Nå må starten av handlingsruten settes rikitg basert på state
+        if(state==IDLE||state==WAITING){
+            if(action_array[0]==IDLE){action_array[0]=IGNORE;}
+            else{action_array[0]=UP;}
+        }
     }
 
-    //Ellers hvis vi er på vei ned eller venter
-    else{
-
-    }
     action_array[num_actions-1]=IGNORE;
-
 }
 
 State request_action(){

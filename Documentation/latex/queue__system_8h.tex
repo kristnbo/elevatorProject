@@ -22,8 +22,8 @@ struct \hyperlink{structOrder}{Order}
 \mbox{\Hypertarget{queue__system_8h_afee8835771bbda01feb84c69efe502d8}\label{queue__system_8h_afee8835771bbda01feb84c69efe502d8}} 
 \#define {\bfseries Q\+U\+E\+U\+E\+\_\+\+S\+Y\+S\+T\+E\+M\+\_\+H}
 \item 
-\mbox{\Hypertarget{queue__system_8h_a039e391a7cd1df2739cea761401c561e}\label{queue__system_8h_a039e391a7cd1df2739cea761401c561e}} 
-\#define {\bfseries M\+A\+X\+\_\+\+N\+U\+M\+E\+R\+\_\+\+O\+F\+\_\+\+O\+R\+D\+E\+RS}~10
+\mbox{\Hypertarget{queue__system_8h_af378d9dca704a05fbd60780d77657f0e}\label{queue__system_8h_af378d9dca704a05fbd60780d77657f0e}} 
+\#define {\bfseries M\+A\+X\+\_\+\+N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+O\+R\+D\+E\+RS}~10
 \item 
 \mbox{\Hypertarget{queue__system_8h_a8adf1b72111700ab8a38abdbc4d22c04}\label{queue__system_8h_a8adf1b72111700ab8a38abdbc4d22c04}} 
 \#define {\bfseries M\+A\+X\+\_\+\+N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+A\+C\+T\+I\+O\+NS}~15
@@ -34,23 +34,42 @@ struct \hyperlink{structOrder}{Order}
 \mbox{\Hypertarget{queue__system_8h_a72bb837d293ee0211430def860d98075}\label{queue__system_8h_a72bb837d293ee0211430def860d98075}} 
 typedef struct \hyperlink{structOrder}{Order} \hyperlink{queue__system_8h_a72bb837d293ee0211430def860d98075}{Order}
 \begin{DoxyCompactList}\small\item\em Common type for orders. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{queue__system_8h_a5d74787dedbc4e11c1ab15bf487e61f8}\label{queue__system_8h_a5d74787dedbc4e11c1ab15bf487e61f8}} 
+enum \hyperlink{queue__system_8h_a5d74787dedbc4e11c1ab15bf487e61f8}{State} \{ \newline
+{\bfseries UP}, 
+{\bfseries D\+O\+WN}, 
+{\bfseries I\+D\+LE}, 
+{\bfseries W\+A\+I\+T\+I\+NG}, 
+\newline
+{\bfseries E\+M\+E\+R\+G\+E\+N\+C\+Y\+\_\+\+S\+T\+OP}, 
+{\bfseries I\+G\+N\+O\+RE}
+ \}\begin{DoxyCompactList}\small\item\em The state type found in main. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{queue__system_8h_a738c57c092eaae0b4e2e663d8cce93d5}\label{queue__system_8h_a738c57c092eaae0b4e2e663d8cce93d5}} 
-void \hyperlink{queue__system_8h_a738c57c092eaae0b4e2e663d8cce93d5}{queue\+\_\+init} ()
-\begin{DoxyCompactList}\small\item\em Allocates all memory needed for the order and action arrays. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{queue__system_8h_a58f6bdffd9825a8d3e1bfa8663d56a57}\label{queue__system_8h_a58f6bdffd9825a8d3e1bfa8663d56a57}} 
 void \hyperlink{queue__system_8h_a58f6bdffd9825a8d3e1bfa8663d56a57}{add\+\_\+order} (\hyperlink{structOrder}{Order} $\ast$order)
-\begin{DoxyCompactList}\small\item\em Adds an order to the order array. First checks if the order is already in the array. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Adds an order to the order array by setting active to 1. \end{DoxyCompactList}\item 
+void \hyperlink{queue__system_8h_a17066050ec7dda2bbe6a24075bc863c6}{remove\+\_\+order} (int current\+\_\+floor, \hyperlink{structOrder}{Order} $\ast$order\+\_\+array)
+\begin{DoxyCompactList}\small\item\em Removes all order for a floor, by setting active to zero. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{queue__system_8h_ac22d9603e631d879ba3c0b0f8f3def85}\label{queue__system_8h_ac22d9603e631d879ba3c0b0f8f3def85}} 
+void {\bfseries clear\+\_\+order} (int current\+\_\+floor)
+\item 
 \mbox{\Hypertarget{queue__system_8h_a3b5e2fef85d5401a65d922ea5b1074bf}\label{queue__system_8h_a3b5e2fef85d5401a65d922ea5b1074bf}} 
 void \hyperlink{queue__system_8h_a3b5e2fef85d5401a65d922ea5b1074bf}{print\+\_\+queue} ()
-\begin{DoxyCompactList}\small\item\em Prints all orders with floor and type. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Variables}
-\begin{DoxyCompactItemize}
-\item 
-\hyperlink{hardware_8h_a2167c399a24df296afc432bcb88228af}{Hardware\+Movement} \hyperlink{queue__system_8h_adf599805a4d5ea67aea18582b09abfe9}{action\+\_\+array} \mbox{[}M\+A\+X\+\_\+\+N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+A\+C\+T\+I\+O\+NS\mbox{]}
-\begin{DoxyCompactList}\small\item\em An array for keeping track of all active orders. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Prints all orders with floor and type, and shows wether they are active or not. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{queue__system_8h_a56eebc711d4edf1b3bdaec6668e40a79}\label{queue__system_8h_a56eebc711d4edf1b3bdaec6668e40a79}} 
+void \hyperlink{queue__system_8h_a56eebc711d4edf1b3bdaec6668e40a79}{calculate\+\_\+action\+\_\+array} (\hyperlink{queue__system_8h_a5d74787dedbc4e11c1ab15bf487e61f8}{State} state, \hyperlink{queue__system_8h_a5d74787dedbc4e11c1ab15bf487e61f8}{State} last\+\_\+state, int current\+\_\+floor)
+\begin{DoxyCompactList}\small\item\em Calculates the elevators actions and refreshes the action\+\_\+list. \end{DoxyCompactList}\item 
+\hyperlink{queue__system_8h_a5d74787dedbc4e11c1ab15bf487e61f8}{State} \hyperlink{queue__system_8h_a6a72d566d7d7bc31f5e920f69428fe28}{request\+\_\+action} ()
+\begin{DoxyCompactList}\small\item\em Fetches next action, and updates the order array by deleting all completed orders. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{queue__system_8h_ad115f1168104746bd6f125391fbd0a99}\label{queue__system_8h_ad115f1168104746bd6f125391fbd0a99}} 
+void \hyperlink{queue__system_8h_ad115f1168104746bd6f125391fbd0a99}{print\+\_\+actions} ()
+\begin{DoxyCompactList}\small\item\em Prints all actions planned. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -58,18 +77,42 @@ A system for keeping track of all current orders. The system also calculates the
 
 
 
-\subsection{Variable Documentation}
-\mbox{\Hypertarget{queue__system_8h_adf599805a4d5ea67aea18582b09abfe9}\label{queue__system_8h_adf599805a4d5ea67aea18582b09abfe9}} 
-\index{queue\+\_\+system.\+h@{queue\+\_\+system.\+h}!action\+\_\+array@{action\+\_\+array}}
-\index{action\+\_\+array@{action\+\_\+array}!queue\+\_\+system.\+h@{queue\+\_\+system.\+h}}
-\subsubsection{\texorpdfstring{action\+\_\+array}{action\_array}}
-{\footnotesize\ttfamily \hyperlink{hardware_8h_a2167c399a24df296afc432bcb88228af}{Hardware\+Movement} action\+\_\+array\mbox{[}M\+A\+X\+\_\+\+N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+A\+C\+T\+I\+O\+NS\mbox{]}}
+\subsection{Function Documentation}
+\mbox{\Hypertarget{queue__system_8h_a17066050ec7dda2bbe6a24075bc863c6}\label{queue__system_8h_a17066050ec7dda2bbe6a24075bc863c6}} 
+\index{queue\+\_\+system.\+h@{queue\+\_\+system.\+h}!remove\+\_\+order@{remove\+\_\+order}}
+\index{remove\+\_\+order@{remove\+\_\+order}!queue\+\_\+system.\+h@{queue\+\_\+system.\+h}}
+\subsubsection{\texorpdfstring{remove\+\_\+order()}{remove\_order()}}
+{\footnotesize\ttfamily void remove\+\_\+order (\begin{DoxyParamCaption}\item[{int}]{current\+\_\+floor,  }\item[{\hyperlink{structOrder}{Order} $\ast$}]{order\+\_\+array }\end{DoxyParamCaption})}
 
 
 
-An array for keeping track of all active orders. 
+Removes all order for a floor, by setting active to zero. 
 
-An array for keeping track of all planned future actions. 
 
-Definition at line 32 of file queue\+\_\+system.\+h.
+\begin{DoxyParams}{Parameters}
+{\em current\+\_\+floor} & The floor orders should be deactivated for. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 73 of file queue\+\_\+system.\+c.
+
+\mbox{\Hypertarget{queue__system_8h_a6a72d566d7d7bc31f5e920f69428fe28}\label{queue__system_8h_a6a72d566d7d7bc31f5e920f69428fe28}} 
+\index{queue\+\_\+system.\+h@{queue\+\_\+system.\+h}!request\+\_\+action@{request\+\_\+action}}
+\index{request\+\_\+action@{request\+\_\+action}!queue\+\_\+system.\+h@{queue\+\_\+system.\+h}}
+\subsubsection{\texorpdfstring{request\+\_\+action()}{request\_action()}}
+{\footnotesize\ttfamily \hyperlink{queue__system_8h_a5d74787dedbc4e11c1ab15bf487e61f8}{State} request\+\_\+action (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Fetches next action, and updates the order array by deleting all completed orders. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em state} & F\+SM current state. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 247 of file queue\+\_\+system.\+c.
 

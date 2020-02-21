@@ -42,8 +42,8 @@ typedef enum {
 
 */
 State state=UP;
-State last_state;
-int current_floor=1;
+State last_state=UP;
+int current_floor=0;
 
 
 
@@ -64,17 +64,21 @@ int main(){
     printf("Press the stop button on the elevator panel to exit\n");
 
     //hardware_command_movement(HARDWARE_MOVEMENT_UP);
-
-
+    /*
     while (1)
     {
     if(check_for_order()){
             calculate_action_array(state,last_state,current_floor);
         }
     print_queue();
+    printf("Current state: %d ",state);
+    printf("\t Current floor: %d.floor\n",current_floor+1);
+    printf("Action array:\t");
     print_actions();
-    }
     
+    }
+    */
+ 
     
     while(1){
         
@@ -117,9 +121,34 @@ int main(){
         if(check_for_order()){
             calculate_action_array(state,last_state,current_floor);
         }
+        
         print_queue();
-        print_actions();
+        switch (state)
+        {
+        case UP:
+            printf("Current state: UP");
+            break;
+        case DOWN:
+            printf("Current state: DOWN");
+            break;
+        case IDLE:
+            printf("Current state: IDLE");
+            break;
+        case WAITING:
+            printf("Current state: WAITING");
+            break;
+        case EMERGENCY_STOP:
+            printf("Current state: EMERGENCY_STOP");
+            break;
 
+        
+        default:
+            break;
+        }
+        printf("\t Current floor: %d.floor\n",current_floor+1);
+        printf("Action array:\t");
+        print_actions();
+        
 
 
         /* All buttons must be polled, like this: */

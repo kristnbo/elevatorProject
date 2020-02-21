@@ -1,12 +1,11 @@
 var indexSectionsWithContent =
 {
-  0: "achopq",
+  0: "achopqrs",
   1: "o",
   2: "hoq",
-  3: "achpq",
-  4: "a",
-  5: "o",
-  6: "h"
+  3: "achpr",
+  4: "o",
+  5: "hs"
 };
 
 var indexSectionNames =
@@ -15,9 +14,8 @@ var indexSectionNames =
   1: "classes",
   2: "files",
   3: "functions",
-  4: "variables",
-  5: "typedefs",
-  6: "enums"
+  4: "typedefs",
+  5: "enums"
 };
 
 var indexSectionLabels =
@@ -26,8 +24,7 @@ var indexSectionLabels =
   1: "Data Structures",
   2: "Files",
   3: "Functions",
-  4: "Variables",
-  5: "Typedefs",
-  6: "Enumerations"
+  4: "Typedefs",
+  5: "Enumerations"
 };
 
