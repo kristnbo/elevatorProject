@@ -120,11 +120,22 @@ void print_queue(){
 }
 
 void calculate_action_array(State state, State last_state, int current_floor){
+    //Tømmer action_array
     for(int i=0;i<MAX_NUMBER_OF_ACTIONS;i++){
         action_array[i]=IGNORE;
     }
-    
+    int num_actions=0;
+
+    //Lager en kopi av ordre og sjekker at det er aktive ordre
+    int active_orders=0;
     Order order_array_copy[MAX_NUMBER_OF_ORDERS];
+    for(int i=0;i<MAX_NUMBER_OF_ORDERS;i++){
+        order_array_copy[i]=order_array[i];
+        if(order_array[i].active){active_orders=1;}
+    }
+    if(!active_orders){return;}
+
+    //Finner øverste og laveste ønskede etasje
     int floor_highest;
     int floor_lowest;
     for(int i=0;i<MAX_NUMBER_OF_ORDERS;i++){
@@ -133,10 +144,6 @@ void calculate_action_array(State state, State last_state, int current_floor){
             floor_highest=order_array[i].floor;
             break;
             }
-    }
-    int num_actions=0;
-    for(int i=0;i<MAX_NUMBER_OF_ORDERS;i++){
-        order_array_copy[i]=order_array[i];
     }
     for(int i=0;i<MAX_NUMBER_OF_ORDERS;i++){
         if(order_array_copy[i].active){
@@ -149,17 +156,38 @@ void calculate_action_array(State state, State last_state, int current_floor){
             }
         }
     }
-    printf("Highest: %d\n",floor_highest+1);
-    printf("Current: %d\n",current_floor+1);
-    //Hvis vi må oppover først, da blir lengste mulige opp-ned-opp
+    //Hvis det finnes ordre til nåværende etasje og vi er i bevegelse
+    //Ikke tenk på det, men hvis vi står stille skal den ignoreres eller
+    //Dørene skal åpnes
+   
+    if((state==IDLE||WAITING)&&last_state!=EMERGENCY_STOP){
+        for(int i =0;i<MAX_NUMBER_OF_ORDERS;i++){
+            if(order_array_copy[i].floor==current_floor&&order_array_copy[i].active){
+                if(order_array_copy[i].order_type==HARDWARE_ORDER_INSIDE){
+                    order_array_copy[i].active=0;
+                    order_array[i].active=0;
+                }
+                else
+                {
+                    remove_order(current_floor,order_array_copy);
+                    remove_order(current_floor,order_array);
+                    action_array[num_actions]=IDLE;
+                    num_actions+=1;
+                }
+                
+            }
+        }   
+    }
+   
+  
+    //Sjekker om vi skal oppover først
     if(state!=DOWN && last_state!=DOWN && floor_highest>current_floor){
-
+        //Er det etasjer mellom der vi er og topp etasjen
         if(floor_highest-current_floor>1){
-        //Siden det er etasjer mellom
-        //der du er og dit du skal
-        //må du sjekke om du må stoppe noe sted på veien
+            //Siden det er etasjer mellom
+            //der du er og dit du skal
+            //må du sjekke om du må stoppe noe sted på veien
             for(int f=current_floor+1;f<floor_highest;f++){
-                printf("Checking floor: %d\n",f+1);
                 int stopped = 0;
                 for(int i=0;i<3;i++){
                     if(order_array_copy[3*f+i].active&&order_array_copy[3*f+i].order_type!=HARDWARE_ORDER_DOWN){
@@ -174,6 +202,7 @@ void calculate_action_array(State state, State last_state, int current_floor){
                         printf("Should stop at floor: %d\n",f+1);
                     }
                 }
+                //hvis du ikke stopper i en etasje skal du kjøre forbi
                 if(!stopped){
                     action_array[num_actions]=IGNORE;
                     num_actions+=1;
@@ -181,69 +210,83 @@ void calculate_action_array(State state, State last_state, int current_floor){
                     num_actions+=1;
                 }
             }
+            //PÅ øverste etasje skal du stoppe og snu
             printf("Should stop at: %d\n", floor_highest+1);
             action_array[num_actions]=IDLE;
-            num_actions+=1;
-            action_array[num_actions]=DOWN;
             num_actions+=1;
             remove_order(floor_highest,order_array_copy);
 
         }
+        //Hvis du bare skal til etasjen over 
         else{
-            //Skjønner ikke hvorfor denne ignoren trengs, men funker
+            //Skjønner ikke hvorfor denne ignoren trengs(var egentlig up), men funker
             action_array[num_actions]=IGNORE;
             num_actions+=1;
             action_array[num_actions]=IDLE;
             num_actions+=1;
-            action_array[num_actions]=DOWN;
-            num_actions+=1;
-        }
-        //Nå har du vært så høyt du skal, nå må du så lavt du skal,
-        //Men må igjen sjekke om du skal stoppe på veien
-        for(int f=floor_highest-1;f>floor_lowest;f--){
-            int stopped = 0;
-            for(int i=0;i<3;i++){
-                if(order_array_copy[3*f+i].active&&order_array_copy[3*f+i].order_type!=HARDWARE_ORDER_UP){
-                    action_array[num_actions]=IGNORE;
-                    num_actions+=1;
-                    action_array[num_actions]=IDLE;
-                    num_actions+=1;
-                    action_array[num_actions]=DOWN;
-                    num_actions+=1;
-                    remove_order(f,order_array_copy);
-                    stopped =1;
-                    printf("Should stop at floor: %d\n",f+1);
-                    printf("Lowest: %d",floor_lowest);
-                }
-            }
-            if(!stopped){
-                action_array[num_actions]=IGNORE;
-                num_actions+=1;
-                action_array[num_actions]=DOWN;
-                num_actions+=1;
-            }
-        }
-        printf("Should stop at: %d\n", floor_highest+1);
-        for(int i=0;i<MAX_NUMBER_OF_ORDERS;i++){
-            if(order_array_copy[i].active){
-                action_array[num_actions]=IDLE;
-                num_actions+=1;
-                action_array[num_actions]=UP;
-                num_actions+=1;
-                break;
-            }
+            remove_order(floor_highest,order_array_copy);
         }
 
         //Nå må starten av handlingsruten settes rikitg basert på state
         if(state==IDLE||state==WAITING){
-            if(action_array[0]==IDLE){action_array[0]=IGNORE;}
-            else{action_array[0]=UP;}
+            action_array[0]=UP;
         }
     }
+    //Sjekker om vi må nedover først
+    else if(state!=UP && last_state!=UP && floor_lowest<current_floor){
+        //Er det etasjer mellom der vi er og topp etasjen
+        if(current_floor-floor_lowest>1){
+            //Siden det er etasjer mellom
+            //der du er og dit du skal
+            //må du sjekke om du må stoppe noe sted på veien
+            for(int f=current_floor-1;f>floor_lowest;f--){
+                int stopped = 0;
+                for(int i=0;i<3;i++){
+                    if(order_array_copy[3*f+i].active&&order_array_copy[3*f+i].order_type!=HARDWARE_ORDER_UP){
+                        action_array[num_actions]=IGNORE;
+                        num_actions+=1;
+                        action_array[num_actions]=IDLE;
+                        num_actions+=1;
+                        action_array[num_actions]=DOWN;
+                        num_actions+=1;
+                        remove_order(f,order_array_copy);
+                        stopped =1;
+                        printf("Should stop at floor: %d\n",f+1);
+                    }
+                }
+                //hvis du ikke stopper i en etasje skal du kjøre forbi
+                if(!stopped){
+                    action_array[num_actions]=IGNORE;
+                    num_actions+=1;
+                    action_array[num_actions]=DOWN;
+                    num_actions+=1;
+                }
+            }
+            //PÅ laveste etasje skal du stoppe og snu
+            printf("Should stop at: %d\n", floor_highest+1);
+            action_array[num_actions]=IDLE;
+            num_actions+=1;
+            remove_order(floor_highest,order_array_copy);
 
-    action_array[num_actions-1]=IGNORE;
+        }
+        //Hvis du bare skal til etasjen under
+        else{
+            //Skjønner ikke hvorfor denne ignoren trengs(var egentlig up), men funker
+            action_array[num_actions]=IGNORE;
+            num_actions+=1;
+            action_array[num_actions]=IDLE;
+            num_actions+=1;
+            remove_order(floor_highest,order_array_copy);
+        }
+
+        //Nå må starten av handlingsruten settes rikitg basert på state
+        if(state==IDLE||state==WAITING){
+            action_array[0]=DOWN;
+        }
+    }
+    
+
 }
-
 State request_action(){
   for(int i =0;i<MAX_NUMBER_OF_ACTIONS;i++){
       if(action_array[i]!=IGNORE){
@@ -276,4 +319,16 @@ void print_actions(){
         }
     }
     printf("\n");
+}
+
+void clear_all_orders(){
+    for(int i = 0;i<MAX_NUMBER_OF_ORDERS;i++){
+        order_array[i].active=0;
+    }
+}
+
+void clear_all_actions(){
+    for(int i = 0;i<MAX_NUMBER_OF_ACTIONS;i++){
+        action_array[i]=IGNORE;
+    }
 }

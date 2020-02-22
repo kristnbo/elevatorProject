@@ -42,7 +42,7 @@ typedef enum {
 
 */
 State state=UP;
-State last_state=UP;
+State last_state=IDLE;
 int current_floor=0;
 
 
@@ -81,12 +81,18 @@ int main(){
  
     
     while(1){
-        
-        if(hardware_get_floor()!=-1){
+        if(hardware_read_stop_signal()){
+            state=EMERGENCY_STOP;
+        }
+        //Hvis vi er ved en etasje
+        else if(hardware_get_floor()!=-1){
+            //Hvis vi kommer fra en annen eller state=idle eller wait
             if(current_floor!=hardware_get_floor()||state==IDLE||state==WAITING){
+                //Sjekk timer
                 if(check_timeout()==1){
                     hardware_command_door_open(0);
                     last_state=state;
+                    //Ber om noe å gjøre
                     state=request_action();
                     if(state==IDLE){
                         timer_start(3);
@@ -110,9 +116,16 @@ int main(){
             break;
         case EMERGENCY_STOP:
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+            clear_all_orders();
+            clear_all_actions();
+            last_state=EMERGENCY_STOP;
+            state=WAITING;
             break;
         case WAITING:
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+            calculate_action_array(state,last_state,current_floor);
+            last_state=state;
+            state=request_action();
             break;
         
         default:
@@ -121,7 +134,7 @@ int main(){
         if(check_for_order()){
             calculate_action_array(state,last_state,current_floor);
         }
-        
+       
         print_queue();
         switch (state)
         {
@@ -148,7 +161,7 @@ int main(){
         printf("\t Current floor: %d.floor\n",current_floor+1);
         printf("Action array:\t");
         print_actions();
-        
+               
 
 
         /* All buttons must be polled, like this: */

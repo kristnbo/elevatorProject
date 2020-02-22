@@ -71,6 +71,10 @@ State request_action();
  */
 void print_actions();
 
+void clear_all_orders();
+
+void clear_all_actions();
+
 
 #endif
 
