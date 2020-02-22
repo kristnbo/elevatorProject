@@ -3,27 +3,24 @@
 
 For å få includes til å gi mening må struct Order ligge i queue system, burde order_handler og queue system være samme modul?
 
-Trenger vi max antall actions define, tror det blir 11 men må diskuteres
+Trenger vi max antall actions define, tror det blir 11 men må diskuteres!!!
 
-Skal add_order kalle på calculate action, siden denne kunn skal skje når det trykkes på knapper?
+Skal add_order kalle på calculate action, siden denne kunn skal skje når det trykkes på knapper?(EDIT: Nå skal det kalkuleres
+hver gang man er på waiting, dette simplisfiserte og løste hele calculate.)
 
 Rare feil kan dukke opp hvis man ikke kjører make clean
 
-Order array skal initialiseres finere, med en ignore*antall
+Order array skal initialiseres finere, med en ignore*antall(EDIT: ser ikke ut som det går, men en for loop går)
 
 //Notater til calculate:
 MÅ ALLTID SJEKKE AT SISTE ER IDLE, EVT SETTE DEN TIL DET
 Genererer en copy av alle ordre, denne kopien jobbes gjennom
 Kan det lønne seg å ha en variabl aktiv i struct order som kan settes, slik at dersom
 den er høy skal den tas hensyn til, ellers ikke. Er surrete å legge til og 
-fjerne fra array ettersom det ikke er standard 
-Må da ha en queue init()
+fjerne fra array ettersom det ikke er standard (EDIT: JA DET LØNNER SEG, BIG TIME!)
 
 Funker ikke med å fylle action med 0, så må lage en state ignore
 
-MAX_NUMBER_ORDERS bør fjere max fra den
-order_array_length er foreldet
-update_order_array er jo get next action
 
 //Variabler jeg er misfornøyd med
 floor_lowest
@@ -36,6 +33,7 @@ remove_order
 hvordan skal order og action array dokumenteres, de ligger kun i c-fil
 Kolbjørn sa FSM burde ligge i main, men queue_system trenger å kjenne til
 enum state. men kan ikke inkludere main.c, what to do?
+Trenger nå en clear_order og en remove_order, kan det løses.
 
 //magic command
 wget -O- www.itk.ntnu.no/heis.sh| sh

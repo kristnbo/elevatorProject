@@ -70,7 +70,7 @@ int main(){
     if(check_for_order()){
             calculate_action_array(state,last_state,current_floor);
         }
-    print_queue();
+    print_orders();
     printf("Current state: %d ",state);
     printf("\t Current floor: %d.floor\n",current_floor+1);
     printf("Action array:\t");
@@ -135,7 +135,7 @@ int main(){
             calculate_action_array(state,last_state,current_floor);
         }
        
-        print_queue();
+        print_orders();
         switch (state)
         {
         case UP:

@@ -8,11 +8,11 @@
  */
 #ifndef QUEUE_SYSTEM_H
 #define QUEUE_SYSTEM_H
-#define MAX_NUMBER_OF_ORDERS 10
+#define NUMBER_OF_ORDERS 10
 #define MAX_NUMBER_OF_ACTIONS 15
 
 /**
- * @brief Common type for orders.
+ * @brief A type for orders. Specifying floor, type of order and whether the order is active or not.
  */
 
 typedef struct Order {
@@ -23,7 +23,7 @@ typedef struct Order {
 
 
 /**
- * @brief The state type found in main
+ * @brief The state type found in main.
  */
 typedef enum {
     UP,
@@ -36,12 +36,12 @@ typedef enum {
 
 
 /**
- * @brief Adds an order to the order array by setting active to 1.
+ * @brief Adds an order to the order array by setting active to 1 for the specified order.
  */
 void add_order(Order *order);
 
 /**
- * @brief Removes all order for a floor, by setting active to zero. 
+ * @brief Removes all orders for a floor, by setting active to zero. 
  * @param current_floor The floor orders should be deactivated for.
  */
 void remove_order(int current_floor,Order *order_array);
@@ -49,12 +49,13 @@ void remove_order(int current_floor,Order *order_array);
 void clear_order(int current_floor);
 
 /**
- * @brief Prints all orders with floor and type, and shows wether they are active or not.
+ * @brief Prints all orders with floor and type, and shows whether they are active or not.
  */
-void print_queue();
+void print_orders();
 
 /**
- * @brief Calculates the elevators actions and refreshes the action_list.
+ * @brief Calculates the elevators actions and refreshes the action_list. Also
+ * updates order_array for current floor.
  */
 
 void calculate_action_array(State state, State last_state, int current_floor);
@@ -63,7 +64,6 @@ void calculate_action_array(State state, State last_state, int current_floor);
  * @brief Fetches next action, and updates the order array by deleting all completed orders.
  * @param state FSM current state.
  */
-
 State request_action();
 
 /**
@@ -71,8 +71,14 @@ State request_action();
  */
 void print_actions();
 
+/**
+ * @brief Sets active to 0 for all orders in order_array.
+ */
 void clear_all_orders();
 
+/**
+ * @brief Sets all elements in action_arry to IGNORE.
+ */
 void clear_all_actions();
 
 

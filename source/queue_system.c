@@ -1,9 +1,7 @@
 #include "queue_system.h"
-#include <stdio.h>
+#include <stdio.h> 
 
-int order_array_length=0;
-
-Order order_array[MAX_NUMBER_OF_ORDERS]=
+Order order_array[NUMBER_OF_ORDERS]=
 {
     {0,HARDWARE_ORDER_UP,0},
     {0,HARDWARE_ORDER_INSIDE,0},
@@ -37,29 +35,9 @@ State action_array[MAX_NUMBER_OF_ACTIONS]=
  IGNORE
  };
 
-
-
-//Add order function before active variable was added
-/*
 void add_order(Order *order){
     Order *order_ptr=order_array;
-    for(int i = 0;i < order_array_length; i++){
-        if(order->floor==order_ptr->floor){
-            if(order->order_type==order_ptr->order_type){
-                return;
-            }
-        }
-        order_ptr++;
-    }
-    order_array[order_array_length].floor=order->floor;
-    order_array[order_array_length].order_type=order->order_type;
-    order_array_length+=1;
-    
-}
-*/
-void add_order(Order *order){
-    Order *order_ptr=order_array;
-    for(int i = 0;i < MAX_NUMBER_OF_ORDERS; i++){
+    for(int i = 0;i < NUMBER_OF_ORDERS; i++){
         if(order->floor==order_ptr->floor){
             if(order->order_type==order_ptr->order_type){
                 order_ptr->active=1;
@@ -71,21 +49,21 @@ void add_order(Order *order){
 }
 
 void remove_order(int current_floor, Order *order_array){
-    for(Order* o=order_array;o<&order_array[MAX_NUMBER_OF_ORDERS];o++){
+    for(Order* o=order_array;o<&order_array[NUMBER_OF_ORDERS];o++){
         if(o->floor==current_floor){o->active=0;}
     }
 }
 
 void clear_order(int current_floor){
-    for(Order* o=order_array;o<&order_array[MAX_NUMBER_OF_ORDERS];o++){
+    for(Order* o=order_array;o<&order_array[NUMBER_OF_ORDERS];o++){
         if(o->floor==current_floor){o->active=0;}
     }
 }
 
-void print_queue(){
+void print_orders(){
     printf("\033[H\033[J"); //Clears linux terminal
     Order *order_ptr=order_array;
-    for(int i = 0; i<MAX_NUMBER_OF_ORDERS;i++)
+    for(int i = 0; i<NUMBER_OF_ORDERS;i++)
     {
         printf("Floor %d",order_ptr->floor+1);
         switch (order_ptr->order_type)
@@ -128,8 +106,8 @@ void calculate_action_array(State state, State last_state, int current_floor){
 
     //Lager en kopi av ordre og sjekker at det er aktive ordre
     int active_orders=0;
-    Order order_array_copy[MAX_NUMBER_OF_ORDERS];
-    for(int i=0;i<MAX_NUMBER_OF_ORDERS;i++){
+    Order order_array_copy[NUMBER_OF_ORDERS];
+    for(int i=0;i<NUMBER_OF_ORDERS;i++){
         order_array_copy[i]=order_array[i];
         if(order_array[i].active){active_orders=1;}
     }
@@ -138,14 +116,14 @@ void calculate_action_array(State state, State last_state, int current_floor){
     //Finner øverste og laveste ønskede etasje
     int floor_highest;
     int floor_lowest;
-    for(int i=0;i<MAX_NUMBER_OF_ORDERS;i++){
+    for(int i=0;i<NUMBER_OF_ORDERS;i++){
         if(order_array[i].active){
             floor_lowest=order_array[i].floor;
             floor_highest=order_array[i].floor;
             break;
             }
     }
-    for(int i=0;i<MAX_NUMBER_OF_ORDERS;i++){
+    for(int i=0;i<NUMBER_OF_ORDERS;i++){
         if(order_array_copy[i].active){
 
             if(order_array_copy[i].floor>floor_highest){
@@ -161,7 +139,7 @@ void calculate_action_array(State state, State last_state, int current_floor){
     //Dørene skal åpnes
    
     if((state==IDLE||WAITING)&&last_state!=EMERGENCY_STOP){
-        for(int i =0;i<MAX_NUMBER_OF_ORDERS;i++){
+        for(int i =0;i<NUMBER_OF_ORDERS;i++){
             if(order_array_copy[i].floor==current_floor&&order_array_copy[i].active){
                 if(order_array_copy[i].order_type==HARDWARE_ORDER_INSIDE){
                     order_array_copy[i].active=0;
@@ -322,7 +300,7 @@ void print_actions(){
 }
 
 void clear_all_orders(){
-    for(int i = 0;i<MAX_NUMBER_OF_ORDERS;i++){
+    for(int i = 0;i<NUMBER_OF_ORDERS;i++){
         order_array[i].active=0;
     }
 }
