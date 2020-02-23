@@ -9,7 +9,7 @@
 #ifndef QUEUE_SYSTEM_H
 #define QUEUE_SYSTEM_H
 #define NUMBER_OF_ORDERS 10
-#define MAX_NUMBER_OF_ACTIONS 15
+#define MAX_NUMBER_OF_ACTIONS 20
 
 /**
  * @brief A type for orders. Specifying floor, type of order and whether the order is active or not.

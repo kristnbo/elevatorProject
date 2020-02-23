@@ -32,6 +32,11 @@ State action_array[MAX_NUMBER_OF_ACTIONS]=
  IGNORE,
  IGNORE,
  IGNORE,
+ IGNORE,
+ IGNORE,
+ IGNORE,
+ IGNORE,
+ IGNORE,
  IGNORE
  };
 
@@ -134,21 +139,20 @@ void calculate_action_array(State state, State last_state, int current_floor){
             }
         }
     }
-    //Hvis det finnes ordre til nåværende etasje og vi er i bevegelse
-    //Ikke tenk på det, men hvis vi står stille skal den ignoreres eller
-    //Dørene skal åpnes
-   
-    if((state==IDLE||WAITING)&&last_state!=EMERGENCY_STOP){
+
+    //If doors already open in a requested floor or if waiting at a floor with doors closed
+    if((state==IDLE && last_state != WAITING) || (state == WAITING && hardware_get_floor() != -1)){
         for(int i =0;i<NUMBER_OF_ORDERS;i++){
             if(order_array_copy[i].floor==current_floor&&order_array_copy[i].active){
                 if(order_array_copy[i].order_type==HARDWARE_ORDER_INSIDE){
                     order_array_copy[i].active=0;
-                    order_array[i].active=0;
+                    remove_order(current_floor,order_array_copy);
+                    //should be done another place
+                    remove_order(current_floor,order_array);
                 }
                 else
                 {
                     remove_order(current_floor,order_array_copy);
-                    remove_order(current_floor,order_array);
                     action_array[num_actions]=IDLE;
                     num_actions+=1;
                 }
@@ -156,10 +160,36 @@ void calculate_action_array(State state, State last_state, int current_floor){
             }
         }   
     }
+
+    //If waiting between floors 
+    if((state == WAITING && hardware_get_floor() == -1)){
+        for(int i =0;i<NUMBER_OF_ORDERS;i++){
+            if(order_array_copy[i].floor==current_floor&&order_array_copy[i].active){
+                if(last_state == UP){
+                    action_array[num_actions]=DOWN;
+                    num_actions+=1;
+                    action_array[num_actions]=IDLE;
+                    num_actions+=1;
+                    remove_order(current_floor,order_array_copy);
+                }
+                if(last_state == DOWN){
+                    action_array[num_actions]=UP;
+                    num_actions+=1;
+                    action_array[num_actions]=IDLE;
+                    num_actions+=1;
+                    remove_order(current_floor,order_array_copy);
+                }
+                
+            }
+        }   
+    }
+    
+    
+
    
   
     //Sjekker om vi skal oppover først
-    if(state!=DOWN && last_state!=DOWN && floor_highest>current_floor){
+    if(((state!=DOWN && last_state!=DOWN) || state == WAITING) && floor_highest>current_floor){
         //Er det etasjer mellom der vi er og topp etasjen
         if(floor_highest-current_floor>1){
             //Siden det er etasjer mellom
@@ -177,7 +207,7 @@ void calculate_action_array(State state, State last_state, int current_floor){
                         num_actions+=1;
                         remove_order(f,order_array_copy);
                         stopped =1;
-                        printf("Should stop at floor: %d\n",f+1);
+
                     }
                 }
                 //hvis du ikke stopper i en etasje skal du kjøre forbi
@@ -189,7 +219,7 @@ void calculate_action_array(State state, State last_state, int current_floor){
                 }
             }
             //PÅ øverste etasje skal du stoppe og snu
-            printf("Should stop at: %d\n", floor_highest+1);
+
             action_array[num_actions]=IDLE;
             num_actions+=1;
             remove_order(floor_highest,order_array_copy);
@@ -211,7 +241,7 @@ void calculate_action_array(State state, State last_state, int current_floor){
         }
     }
     //Sjekker om vi må nedover først
-    else if(state!=UP && last_state!=UP && floor_lowest<current_floor){
+    else if(((state!=UP && last_state!=UP)||state == WAITING )&& floor_lowest<current_floor){
         //Er det etasjer mellom der vi er og topp etasjen
         if(current_floor-floor_lowest>1){
             //Siden det er etasjer mellom
@@ -229,7 +259,7 @@ void calculate_action_array(State state, State last_state, int current_floor){
                         num_actions+=1;
                         remove_order(f,order_array_copy);
                         stopped =1;
-                        printf("Should stop at floor: %d\n",f+1);
+
                     }
                 }
                 //hvis du ikke stopper i en etasje skal du kjøre forbi
@@ -241,7 +271,7 @@ void calculate_action_array(State state, State last_state, int current_floor){
                 }
             }
             //PÅ laveste etasje skal du stoppe og snu
-            printf("Should stop at: %d\n", floor_highest+1);
+
             action_array[num_actions]=IDLE;
             num_actions+=1;
             remove_order(floor_highest,order_array_copy);
@@ -262,6 +292,8 @@ void calculate_action_array(State state, State last_state, int current_floor){
             action_array[0]=DOWN;
         }
     }
+
+    
     
 
 }

@@ -4,7 +4,7 @@
 
 
 
-time_t timeout_timestamp;
+time_t timeout_timestamp=0;
 
 
 void timer_start(int duration){
