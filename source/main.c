@@ -115,12 +115,12 @@ int main(){
     signal(SIGINT, sigint_handler);
 
 
-    //Our code
+ //Init_routine
     State state = DOWN;
     State last_state = DOWN;
     int state_repeated = 0;
 
-    //Elevator init
+   
     hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
     int current_floor=hardware_get_floor();
     while(current_floor == -1){
@@ -130,7 +130,7 @@ int main(){
     state = WAITING;
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 
-
+//end init_routine
 
     while(1){
         //Check stop signal
@@ -151,7 +151,7 @@ int main(){
         case UP:
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
 
-            if(hardware_get_floor() != -1 &&hardware_get_floor() != current_floor){
+            if(hardware_get_floor() != -1 && hardware_get_floor() != current_floor){
                 last_state = state;
                 state  = request_action();
             }
@@ -159,7 +159,7 @@ int main(){
         case DOWN:
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
 
-            if(hardware_get_floor() != -1&& hardware_get_floor() != current_floor){
+            if(hardware_get_floor() != -1 && hardware_get_floor() != current_floor){
                 last_state = state;
                 state = request_action();
             }
@@ -177,9 +177,9 @@ int main(){
             if(check_timeout() == 1){
                 hardware_command_door_open(0);
                 state = request_action();
-                if(state != WAITING){
-                    last_state=IDLE;
-                }
+                //if(state != WAITING){     last_state=idle gir ingen nyttig info
+                //    last_state=IDLE;      koden var der opprinnelig for å ikke miste info 
+                //}                         om up/down ved overgang til wait
                 state_repeated = 0;
 
             }
@@ -191,39 +191,37 @@ int main(){
             break;
         case EMERGENCY_STOP:
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
+            hardware_command_stop_light(hardware_read_stop_signal());
 
-            if(hardware_get_floor() != -1){
+            if(hardware_get_floor() != -1 && hardware_read_stop_signal()){
                 timer_start(3);
                 hardware_command_door_open(1);
             }
-            hardware_command_stop_light(1);
-            
+
+            if(hardware_read_obstruction_signal() && check_timeout()){
+                timer_start(3);
+            }
+
             clear_all_orders();
             clear_all_order_lights();
             clear_all_actions();
-            if(hardware_read_stop_signal() == 0){
+            if(!hardware_read_stop_signal() && check_timeout()){
                 state=WAITING;
+                hardware_command_stop_light(0);
+                hardware_command_door_open(0);
             }
             break;
         case WAITING:
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-
             hardware_command_order_light(current_floor,HARDWARE_ORDER_INSIDE,0);
-            if(hardware_read_obstruction_signal()){
-                timer_start(3);
-            }
-            if(check_timeout()){
-                hardware_command_door_open(0);
-            }
-            hardware_command_stop_light(0);
             
             calculate_action_array(state,last_state,current_floor);
-            if(check_timeout()){
-                state = request_action();
-            }
+            
+            state = request_action();
+            
             
             //If the elevator has turned between floors
-            if(state != WAITING&& state!=last_state){
+            if(state != WAITING && state != last_state){
                 if(last_state==UP){
                     current_floor+=1;
                 }

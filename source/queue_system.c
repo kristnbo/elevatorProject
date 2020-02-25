@@ -102,30 +102,24 @@ void print_orders(){
 
 void calculate_action_array(State state, State last_state, int current_floor){
     //Tømmer action_array
-    for(int i=0;i<MAX_NUMBER_OF_ACTIONS;i++){
+    for(int i=0;i<MAX_NUMBER_OF_ACTIONS;i++){      //erstatt med clear_action_array
         action_array[i]=IGNORE;
     }
     int num_actions=0;
 
-    //Lager en kopi av ordre og sjekker at det er aktive ordre
-    int active_orders=0;
+    //Lager en kopi av ordre_array og sjekker at det er aktive ordre
+    int active_order_exist=0;
     Order order_array_copy[NUMBER_OF_ORDERS];
     for(int i=0;i<NUMBER_OF_ORDERS;i++){
         order_array_copy[i]=order_array[i];
-        if(order_array[i].active){active_orders=1;}
+        if(order_array[i].active){active_order_exist=1;}
     }
-    if(!active_orders){return;}
+    if(!active_order_exist){return;}
 
     //Finner øverste og laveste ønskede etasje
-    int floor_highest;
-    int floor_lowest;
-    for(int i=0;i<NUMBER_OF_ORDERS;i++){
-        if(order_array[i].active){
-            floor_lowest=order_array[i].floor;
-            floor_highest=order_array[i].floor;
-            break;
-            }
-    }
+    int floor_highest = 0;
+    int floor_lowest = HARDWARE_NUMBER_OF_FLOORS;
+   
     for(int i=0;i<NUMBER_OF_ORDERS;i++){
         if(order_array_copy[i].active){
 
@@ -290,11 +284,11 @@ void calculate_action_array(State state, State last_state, int current_floor){
             action_array[0]=DOWN;
         }
     }
-
-    
-    
-
 }
+
+
+
+
 State request_action(){
   for(int i =0;i<MAX_NUMBER_OF_ACTIONS;i++){
       if(action_array[i]!=IGNORE){
@@ -304,9 +298,9 @@ State request_action(){
       }
   }  
   return WAITING;
-
-
 }
+
+
 
 void print_actions(){
     for(int i = 0; i < MAX_NUMBER_OF_ACTIONS; i++){

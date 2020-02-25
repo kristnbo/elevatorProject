@@ -36,12 +36,12 @@ typedef enum {
 
 
 /**
- * @brief Adds an order to the order array by setting active to 1 for the specified order.
+ * @brief Activates an order in the order_array.
  */
 void order_activate(Order *order);
 
 /**
- * @brief Removes all orders for a floor, by setting active to zero. 
+ * @brief Deactivates all orders for a floor, by setting active to zero. 
  * @param current_floor The floor orders should be deactivated for.
  */
 void order_deactivate(int current_floor,Order *order_array);
@@ -54,7 +54,7 @@ void clear_order(int current_floor);
 void print_orders();
 
 /**
- * @brief Calculates the elevators actions and refreshes the action_list. Also
+ * @brief Calculates the elevators actions and refreshes the action_array. Also
  * updates order_array for current floor.
  */
 
@@ -62,7 +62,7 @@ void calculate_action_array(State state, State last_state, int current_floor);
 
 /**
  * @brief Fetches next action, and updates the order array by deleting all completed orders.
- * @param state FSM current state.
+ * @return FSM new state.
  */
 State request_action();
 
@@ -77,7 +77,7 @@ void print_actions();
 void clear_all_orders();
 
 /**
- * @brief Sets all elements in action_arry to IGNORE.
+ * @brief Sets all elements in action_array to IGNORE.
  */
 void clear_all_actions();
 
