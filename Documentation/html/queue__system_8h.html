@@ -135,10 +135,10 @@ Enumerations</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a58f6bdffd9825a8d3e1bfa8663d56a57"><td class="memItemLeft" align="right" valign="top"><a id="a58f6bdffd9825a8d3e1bfa8663d56a57"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue__system_8h.html#a58f6bdffd9825a8d3e1bfa8663d56a57">add_order</a> (<a class="el" href="structOrder.html">Order</a> *order)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue__system_8h.html#a58f6bdffd9825a8d3e1bfa8663d56a57">order_activate</a> (<a class="el" href="structOrder.html">Order</a> *order)</td></tr>
 <tr class="memdesc:a58f6bdffd9825a8d3e1bfa8663d56a57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an order to the order array by setting active to 1. <br /></td></tr>
 <tr class="separator:a58f6bdffd9825a8d3e1bfa8663d56a57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17066050ec7dda2bbe6a24075bc863c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue__system_8h.html#a17066050ec7dda2bbe6a24075bc863c6">remove_order</a> (int current_floor, <a class="el" href="structOrder.html">Order</a> *order_array)</td></tr>
+<tr class="memitem:a17066050ec7dda2bbe6a24075bc863c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queue__system_8h.html#a17066050ec7dda2bbe6a24075bc863c6">order_deactivate</a> (int current_floor, <a class="el" href="structOrder.html">Order</a> *order_array)</td></tr>
 <tr class="memdesc:a17066050ec7dda2bbe6a24075bc863c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes all order for a floor, by setting active to zero.  <a href="#a17066050ec7dda2bbe6a24075bc863c6">More...</a><br /></td></tr>
 <tr class="separator:a17066050ec7dda2bbe6a24075bc863c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac22d9603e631d879ba3c0b0f8f3def85"><td class="memItemLeft" align="right" valign="top"><a id="ac22d9603e631d879ba3c0b0f8f3def85"></a>
@@ -166,13 +166,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="queu
 <p class="definition">Definition in file <a class="el" href="queue__system_8h_source.html">queue_system.h</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a17066050ec7dda2bbe6a24075bc863c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17066050ec7dda2bbe6a24075bc863c6">&#9670;&nbsp;</a></span>remove_order()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a17066050ec7dda2bbe6a24075bc863c6">&#9670;&nbsp;</a></span>order_deactivate()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void remove_order </td>
+          <td class="memname">void order_deactivate </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>current_floor</em>, </td>

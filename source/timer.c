@@ -12,7 +12,7 @@ void timer_start(int duration){
 
 }
 int check_timeout(){
-    if((time(NULL) > timeout_timestamp)){
+    if(time(NULL) > timeout_timestamp){
         return 1;
     }
     return 0;

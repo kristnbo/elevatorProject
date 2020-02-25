@@ -40,20 +40,18 @@ State action_array[MAX_NUMBER_OF_ACTIONS]=
  IGNORE
  };
 
-void add_order(Order *order){
-    Order *order_ptr=order_array;
+void order_activate(Order *order){
     for(int i = 0;i < NUMBER_OF_ORDERS; i++){
-        if(order->floor==order_ptr->floor){
-            if(order->order_type==order_ptr->order_type){
-                order_ptr->active=1;
+        if(order->floor==order_array[i].floor){
+            if(order->order_type==order_array[i].order_type){
+                order_array[i].active=1;
                 return;
             }
         }
-        order_ptr++;
     }
 }
 
-void remove_order(int current_floor, Order *order_array){
+void order_deactivate(int current_floor, Order *order_array){
     for(Order* o=order_array;o<&order_array[NUMBER_OF_ORDERS];o++){
         if(o->floor==current_floor){o->active=0;}
     }
@@ -146,13 +144,13 @@ void calculate_action_array(State state, State last_state, int current_floor){
             if(order_array_copy[i].floor==current_floor&&order_array_copy[i].active){
                 if(order_array_copy[i].order_type==HARDWARE_ORDER_INSIDE){
                     order_array_copy[i].active=0;
-                    remove_order(current_floor,order_array_copy);
+                    order_deactivate(current_floor,order_array_copy);
                     //should be done another place
-                    remove_order(current_floor,order_array);
+                    order_deactivate(current_floor,order_array);
                 }
                 else
                 {
-                    remove_order(current_floor,order_array_copy);
+                    order_deactivate(current_floor,order_array_copy);
                     action_array[num_actions]=IDLE;
                     num_actions+=1;
                 }
@@ -170,14 +168,14 @@ void calculate_action_array(State state, State last_state, int current_floor){
                     num_actions+=1;
                     action_array[num_actions]=IDLE;
                     num_actions+=1;
-                    remove_order(current_floor,order_array_copy);
+                    order_deactivate(current_floor,order_array_copy);
                 }
                 if(last_state == DOWN){
                     action_array[num_actions]=UP;
                     num_actions+=1;
                     action_array[num_actions]=IDLE;
                     num_actions+=1;
-                    remove_order(current_floor,order_array_copy);
+                    order_deactivate(current_floor,order_array_copy);
                 }
                 
             }
@@ -205,7 +203,7 @@ void calculate_action_array(State state, State last_state, int current_floor){
                         num_actions+=1;
                         action_array[num_actions]=UP;
                         num_actions+=1;
-                        remove_order(f,order_array_copy);
+                        order_deactivate(f,order_array_copy);
                         stopped =1;
 
                     }
@@ -222,7 +220,7 @@ void calculate_action_array(State state, State last_state, int current_floor){
 
             action_array[num_actions]=IDLE;
             num_actions+=1;
-            remove_order(floor_highest,order_array_copy);
+            order_deactivate(floor_highest,order_array_copy);
 
         }
         //Hvis du bare skal til etasjen over 
@@ -232,7 +230,7 @@ void calculate_action_array(State state, State last_state, int current_floor){
             num_actions+=1;
             action_array[num_actions]=IDLE;
             num_actions+=1;
-            remove_order(floor_highest,order_array_copy);
+            order_deactivate(floor_highest,order_array_copy);
         }
 
         //Nå må starten av handlingsruten settes rikitg basert på state
@@ -257,7 +255,7 @@ void calculate_action_array(State state, State last_state, int current_floor){
                         num_actions+=1;
                         action_array[num_actions]=DOWN;
                         num_actions+=1;
-                        remove_order(f,order_array_copy);
+                        order_deactivate(f,order_array_copy);
                         stopped =1;
 
                     }
@@ -274,7 +272,7 @@ void calculate_action_array(State state, State last_state, int current_floor){
 
             action_array[num_actions]=IDLE;
             num_actions+=1;
-            remove_order(floor_highest,order_array_copy);
+            order_deactivate(floor_highest,order_array_copy);
 
         }
         //Hvis du bare skal til etasjen under
@@ -284,7 +282,7 @@ void calculate_action_array(State state, State last_state, int current_floor){
             num_actions+=1;
             action_array[num_actions]=IDLE;
             num_actions+=1;
-            remove_order(floor_highest,order_array_copy);
+            order_deactivate(floor_highest,order_array_copy);
         }
 
         //Nå må starten av handlingsruten settes rikitg basert på state

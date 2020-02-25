@@ -7,7 +7,7 @@ int check_for_order(){
             Order new_order;
             new_order.floor=i;
             new_order.order_type=HARDWARE_ORDER_UP;
-            add_order(&new_order);
+            order_activate(&new_order);
             return 1;
            
         }
@@ -15,7 +15,7 @@ int check_for_order(){
             Order new_order;
             new_order.floor=i;
             new_order.order_type=HARDWARE_ORDER_DOWN;
-            add_order(&new_order);
+            order_activate(&new_order);
             return 1;
             
         }
@@ -23,7 +23,7 @@ int check_for_order(){
             Order new_order;
             new_order.floor=i;
             new_order.order_type=HARDWARE_ORDER_INSIDE;
-            add_order(&new_order);
+            order_activate(&new_order);
             return 1;
           
         }

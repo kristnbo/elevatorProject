@@ -7,7 +7,7 @@ For å få includes til å gi mening må struct Order ligge i queue system, burd
 
 Trenger vi max antall actions define, tror det blir 11 men må diskuteres
 
-Skal add_order kalle på calculate action, siden denne kunn skal skje når det trykkes på knapper?
+Skal order_activate kalle på calculate action, siden denne kunn skal skje når det trykkes på knapper?
 
 Rare feil kan dukke opp hvis man ikke kjører make clean
 
@@ -51,8 +51,8 @@ kan ikke fortsette motsatt vei av det den gjorde før Emergency stop
 //Variabler jeg er misfornøyd med
 floor_lowest
 floor_highest
-add_order (burde være order_add)
-remove_order
+order_activate (burde være order_add)
+order_deactivate
 
 
 //Spørsmål 

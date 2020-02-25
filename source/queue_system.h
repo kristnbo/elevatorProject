@@ -38,13 +38,13 @@ typedef enum {
 /**
  * @brief Adds an order to the order array by setting active to 1 for the specified order.
  */
-void add_order(Order *order);
+void order_activate(Order *order);
 
 /**
  * @brief Removes all orders for a floor, by setting active to zero. 
  * @param current_floor The floor orders should be deactivated for.
  */
-void remove_order(int current_floor,Order *order_array);
+void order_deactivate(int current_floor,Order *order_array);
 
 void clear_order(int current_floor);
 
