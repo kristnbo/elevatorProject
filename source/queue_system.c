@@ -132,29 +132,19 @@ void calculate_action_array(State state, State last_state, int current_floor){
         }
     }
 
-    //If doors already open in a requested floor or if waiting at a floor with doors closed
-    if((state==IDLE && last_state != WAITING) || (state == WAITING && hardware_get_floor() != -1)){
+    //Opens door if active order to the floor the elevator is waiting in
+    if(state == WAITING && hardware_get_floor() != -1){
         for(int i =0;i<NUMBER_OF_ORDERS;i++){
             if(order_array_copy[i].floor==current_floor&&order_array_copy[i].active){
-                if(order_array_copy[i].order_type==HARDWARE_ORDER_INSIDE){
-                    order_array_copy[i].active=0;
-                    order_deactivate(current_floor,order_array_copy);
-                    //should be done another place
-                    order_deactivate(current_floor,order_array);
-                }
-                else
-                {
-                    order_deactivate(current_floor,order_array_copy);
-                    action_array[num_actions]=IDLE;
-                    num_actions+=1;
-                }
-                
+                order_deactivate(current_floor,order_array_copy);
+                action_array[num_actions]=IDLE;
+                num_actions+=1;
             }
         }   
     }
 
     //If waiting between floors 
-    if((state == WAITING && hardware_get_floor() == -1)){
+    else if(state == WAITING && hardware_get_floor() == -1){
         for(int i =0;i<NUMBER_OF_ORDERS;i++){
             if(order_array_copy[i].floor==current_floor&&order_array_copy[i].active){
                 if(last_state == UP){
@@ -171,7 +161,6 @@ void calculate_action_array(State state, State last_state, int current_floor){
                     num_actions+=1;
                     order_deactivate(current_floor,order_array_copy);
                 }
-                
             }
         }   
     }
