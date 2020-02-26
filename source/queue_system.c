@@ -1,6 +1,7 @@
 #include "queue_system.h"
 #include <stdio.h> 
 
+//The structure of this array must be preserved 
 Order order_array[NUMBER_OF_ORDERS]=
 {
     {0,HARDWARE_ORDER_UP,0},
@@ -100,6 +101,11 @@ void print_orders(){
     
 }
 
+void push_action_array(State action,int* num_actions){
+    action_array[*num_actions] = action;
+    *num_actions+=1;
+}
+
 void calculate_action_array(State state, State last_state, int current_floor){
     //Tømmer action_array
     for(int i=0;i<MAX_NUMBER_OF_ACTIONS;i++){      //erstatt med clear_action_array
@@ -172,14 +178,14 @@ void calculate_action_array(State state, State last_state, int current_floor){
     //Sjekker om vi skal oppover først
     if(((state!=DOWN && last_state!=DOWN) || state == WAITING) && floor_highest>current_floor){
         //Er det etasjer mellom der vi er og topp etasjen
-        if(floor_highest-current_floor>1){
+        if((floor_highest - current_floor) > 1){
             //Siden det er etasjer mellom
             //der du er og dit du skal
             //må du sjekke om du må stoppe noe sted på veien
-            for(int f=current_floor+1;f<floor_highest;f++){
+            for(int f = current_floor + 1; f < floor_highest; f++){
                 int stopped = 0;
-                for(int i=0;i<3;i++){
-                    if(order_array_copy[3*f+i].active&&order_array_copy[3*f+i].order_type!=HARDWARE_ORDER_DOWN){
+                for(int i = -1; i < 2; i++){    //-1 since 1. floor only has 2 orders
+                    if(order_array_copy[3*f+i].active && order_array_copy[3*f+i].order_type!=HARDWARE_ORDER_DOWN){
                         action_array[num_actions]=IGNORE;
                         num_actions+=1;
                         action_array[num_actions]=IDLE;
@@ -199,8 +205,7 @@ void calculate_action_array(State state, State last_state, int current_floor){
                     num_actions+=1;
                 }
             }
-            //PÅ øverste etasje skal du stoppe og snu
-
+            //PÅ øverste etasje skal du stoppe
             action_array[num_actions]=IDLE;
             num_actions+=1;
             order_deactivate(floor_highest,order_array_copy);
@@ -208,7 +213,6 @@ void calculate_action_array(State state, State last_state, int current_floor){
         }
         //Hvis du bare skal til etasjen over 
         else{
-            //Skjønner ikke hvorfor denne ignoren trengs(var egentlig up), men funker
             action_array[num_actions]=IGNORE;
             num_actions+=1;
             action_array[num_actions]=IDLE;
@@ -217,21 +221,21 @@ void calculate_action_array(State state, State last_state, int current_floor){
         }
 
         //Nå må starten av handlingsruten settes rikitg basert på state
-        if(state==IDLE||state==WAITING){
+        if(state == WAITING || state == IDLE){
             action_array[0]=UP;
         }
     }
     //Sjekker om vi må nedover først
-    else if(((state!=UP && last_state!=UP)||state == WAITING )&& floor_lowest<current_floor){
+    else if(((state != UP && last_state != UP) || state == WAITING) && floor_lowest < current_floor){
         //Er det etasjer mellom der vi er og topp etasjen
-        if(current_floor-floor_lowest>1){
+        if((current_floor - floor_lowest) > 1){
             //Siden det er etasjer mellom
             //der du er og dit du skal
             //må du sjekke om du må stoppe noe sted på veien
-            for(int f=current_floor-1;f>floor_lowest;f--){
+            for(int f = current_floor - 1; f > floor_lowest; f--){
                 int stopped = 0;
-                for(int i=0;i<3;i++){
-                    if(order_array_copy[3*f+i].active&&order_array_copy[3*f+i].order_type!=HARDWARE_ORDER_UP){
+                for(int i = -1; i < 2; i++){ //-1 since 4. floor only contains 2 orders
+                    if(order_array_copy[3*f+i].active && order_array_copy[3*f+i].order_type != HARDWARE_ORDER_UP){
                         action_array[num_actions]=IGNORE;
                         num_actions+=1;
                         action_array[num_actions]=IDLE;
@@ -251,26 +255,24 @@ void calculate_action_array(State state, State last_state, int current_floor){
                     num_actions+=1;
                 }
             }
-            //PÅ laveste etasje skal du stoppe og snu
-
-            action_array[num_actions]=IDLE;
-            num_actions+=1;
-            order_deactivate(floor_highest,order_array_copy);
+            //På laveste etasje skal du stoppe
+            action_array[num_actions] = IDLE;
+            num_actions += 1;
+            order_deactivate(floor_lowest, order_array_copy);
 
         }
         //Hvis du bare skal til etasjen under
         else{
-            //Skjønner ikke hvorfor denne ignoren trengs(var egentlig up), men funker
-            action_array[num_actions]=IGNORE;
-            num_actions+=1;
-            action_array[num_actions]=IDLE;
-            num_actions+=1;
-            order_deactivate(floor_highest,order_array_copy);
+            action_array[num_actions] = IGNORE;
+            num_actions += 1;
+            action_array[num_actions] = IDLE;
+            num_actions += 1;
+            order_deactivate(floor_lowest, order_array_copy);
         }
 
         //Nå må starten av handlingsruten settes rikitg basert på state
-        if(state==IDLE||state==WAITING){
-            action_array[0]=DOWN;
+        if(state == IDLE || state == WAITING){
+            action_array[0] = DOWN;
         }
     }
 }

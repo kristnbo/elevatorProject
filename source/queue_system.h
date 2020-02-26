@@ -53,6 +53,8 @@ void clear_order(int current_floor);
  */
 void print_orders();
 
+void push_action_array(State action,int* num_actions);
+
 /**
  * @brief Calculates the elevators actions and refreshes the action_array. Also
  * updates order_array for current floor.

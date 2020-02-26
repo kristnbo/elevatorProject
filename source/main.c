@@ -176,10 +176,7 @@ int main(){
             }
             if(check_timeout() == 1){
                 hardware_command_door_open(0);
-                state = request_action();
-                //if(state != WAITING){     last_state=idle gir ingen nyttig info
-                //    last_state=IDLE;      koden var der opprinnelig for å ikke miste info 
-                //}                         om up/down ved overgang til wait
+                state = WAITING;
                 state_repeated = 0;
 
             }
@@ -215,20 +212,25 @@ int main(){
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             hardware_command_order_light(current_floor,HARDWARE_ORDER_INSIDE,0);
             
-            calculate_action_array(state,last_state,current_floor);
+            if(state_repeated){
+                calculate_action_array(state, last_state, current_floor);
+            }
             
+            state_repeated = 1;
             state = request_action();
-            
+            if (state != WAITING){
+                state_repeated = 0;
+            }
             
             //If the elevator has turned between floors
-            if(state != WAITING && state != last_state){
-                if(last_state==UP){
-                    current_floor+=1;
-                }
-                if(last_state==DOWN){
-                    current_floor-=1;
-                }
-            }
+            //if(state != WAITING && state != last_state){
+            //    if(last_state==UP){
+            //        current_floor+=1;
+            //    }
+            //    if(last_state==DOWN){
+            //        current_floor-=1;
+            //    }
+            //}
             break;
         default:
             break;
