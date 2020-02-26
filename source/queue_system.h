@@ -53,35 +53,22 @@ void clear_order(int current_floor);
  */
 void print_orders();
 
-void push_action_array(State action,int* num_actions);
 
-/**
- * @brief Calculates the elevators actions and refreshes the action_array. Also
- * updates order_array for current floor.
- */
 
-void calculate_action_array(State state, State last_state, int current_floor);
 
 /**
  * @brief Fetches next action, and updates the order array by deleting all completed orders.
  * @return FSM new state.
  */
-State request_action();
+State request_action(State state, State last_state, int current_floor);
 
-/**
- * @brief Prints all actions planned.
- */
-void print_actions();
+
 
 /**
  * @brief Sets active to 0 for all orders in order_array.
  */
 void clear_all_orders();
 
-/**
- * @brief Sets all elements in action_array to IGNORE.
- */
-void clear_all_actions();
 
 
 #endif

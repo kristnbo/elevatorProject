@@ -128,7 +128,6 @@ State request_action(State state, State last_state, int current_floor){
             }
         }   
     }    
-
     if(hardware_get_floor() != -1){
         if(last_state == WAITING){
             for(int i = 0; i < NUMBER_OF_ORDERS; i++){
@@ -147,30 +146,42 @@ State request_action(State state, State last_state, int current_floor){
         for(int i = 0; i < NUMBER_OF_ORDERS; i++){
             //handles stopping at floor
             if(order_array[i].floor == current_floor && order_array[i].active){
-                if(last_state == UP && order_array[i].order_type != DOWN){
+                if(last_state == UP && order_array[i].order_type != HARDWARE_ORDER_DOWN){
                     return IDLE;
                 }
-                if(last_state == DOWN && order_array[i].order_type != UP){
+                if(last_state == DOWN && order_array[i].order_type != HARDWARE_ORDER_UP){
                     return IDLE;
                 }
             }
         }
-
-        if(order_array[i].active){
+        //leaves a floor if order to another floor @Simen
+        for(int i = 0; i < NUMBER_OF_ORDERS; i++){
+            if(order_array[i].active){
                 if(last_state == DOWN && order_array[i].floor < current_floor){
                     return DOWN;
                 }
                 if(last_state == UP && order_array[i].floor > current_floor){
                     return UP;
                 }
-
-
             }
+        }
+        //@Simen
+        //now returns idle if there is a order to current floor, since the current floor has to be a floor the elevator turns on
+        //if there are other orders after the turn, these will be handled after waiting has become last state
+        for(int i = 0; i < NUMBER_OF_ORDERS; i++){
+            if(order_array[i].floor==current_floor && order_array[i].active){
+                return IDLE;
+            }
+        }
+
     }
+    //@Simen
+    //Waiting is the default return
+    return WAITING;
 
 
   
-    //Sjekker om vi skal oppover først
+    /*//Sjekker om vi skal oppover først
     if(((state!=DOWN && last_state!=DOWN) || state == WAITING)){
         //Er det etasjer mellom der vi er og topp etasjen
         if((floor_highest - current_floor) > 1){
@@ -269,31 +280,12 @@ State request_action(State state, State last_state, int current_floor){
         if(state == IDLE || state == WAITING){
             action_array[0] = DOWN;
         }
-    }
+    }*/
 }
 
 
 
-void print_actions(){
-    for(int i = 0; i < MAX_NUMBER_OF_ACTIONS; i++){
-        switch (action_array[i])
-        {
-        case UP:
-            printf("UP\t");
-            break;
-        case DOWN:
-            printf("DOWN\t");
-            break;
-        case IDLE:
-            printf("IDLE\t");
-            break;
 
-        default:
-            break;
-        }
-    }
-    printf("\n");
-}
 
 void clear_all_orders(){
     for(int i = 0;i<NUMBER_OF_ORDERS;i++){
@@ -301,8 +293,3 @@ void clear_all_orders(){
     }
 }
 
-void clear_all_actions(){
-    for(int i = 0;i<MAX_NUMBER_OF_ACTIONS;i++){
-        action_array[i]=IGNORE;
-    }
-}

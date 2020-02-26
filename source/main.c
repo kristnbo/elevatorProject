@@ -99,8 +99,6 @@ static void print_status(int current_floor,State last_state, State state, int sh
             break;
         }
         printf("\t Current floor: %d.floor\n",current_floor+1);
-        printf("Action array:\t");
-        print_actions();
     }
 }  
 
@@ -119,7 +117,8 @@ int main(){
     State state = DOWN;
     State last_state = DOWN;
     int state_repeated = 0;
-    int above = 1;
+    //above is commented out since its not used yet, resulting in a make error
+    //int above = 1;
 
    
     hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
@@ -141,10 +140,8 @@ int main(){
             }
             state = EMERGENCY_STOP;
         }
-        //Check all order buttons and calculate
-        if(check_for_order()){
-            calculate_action_array(state,last_state,current_floor);
-        }
+        //Check all order buttons
+        check_for_order();
         
         //FSM 
         switch (state)
@@ -152,7 +149,7 @@ int main(){
         case UP:
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
             if(hardware_get_floor() != -1){
-                above = 1; 
+                //above = 1; 
             }
                
             if(hardware_get_floor() != -1 && hardware_get_floor() != current_floor){
@@ -163,7 +160,7 @@ int main(){
         case DOWN:
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
             if(hardware_get_floor() != -1){
-                above = 0; 
+                //above = 0; 
             }
 
             if(hardware_get_floor() != -1 && hardware_get_floor() != current_floor){
@@ -209,7 +206,6 @@ int main(){
 
             clear_all_orders();
             clear_all_order_lights();
-            clear_all_actions();
             if(!hardware_read_stop_signal() && check_timeout()){
                 state = WAITING;
                 state_repeated = 0;
@@ -225,7 +221,7 @@ int main(){
             }
             
             state_repeated = 1;
-            state = request_action();
+            state = request_action(state,last_state,current_floor);
             if (state != WAITING){
                 state_repeated = 0;
             }
@@ -256,7 +252,7 @@ int main(){
         }
 
         //Terminal sugar
-        print_status(current_floor,last_state,state,1);
+        print_status(current_floor,last_state,state,0);
         
     }
 
