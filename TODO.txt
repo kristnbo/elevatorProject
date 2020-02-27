@@ -1,19 +1,12 @@
 
 //Spørsmål 
-Er det greit å endre hardware.c
-
-For å få includes til å gi mening må struct Order ligge i queue system, burde order_handler og queue system være samme modul?
 
 Må crrent floor settes i en løkke eller noe liknede
-
-Skal stop ignoreres ved oppstart?
-
-Viktig! Hvis det er en opp og ned bestilling i en etasje antar
-man kun at en går på? Virker sånn på magic command.
 
 hvordan skal order og action array dokumenteres, de ligger kun i c-fil
 Kolbjørn sa FSM burde ligge i main, men queue_system trenger å kjenne til
 enum state. men kan ikke inkludere main.c, what to do?
+
 
 //Notes
 Hva gjør static funksjoner, ligger noen av dem i main
@@ -23,6 +16,8 @@ Teste obstructed
 
 //magic command [NOT PERFECT/ Stopp mellom etasjer bug]
 wget -O- www.itk.ntnu.no/heis.sh| sh
+
+Feil?: Heisen står i 1. Noen trykker ned i 2., så opp i 3. Da blir personen i 3. ekspedert først
 
 
 //UpDownCalc BUGS

@@ -3,19 +3,19 @@
 #include <stdio.h> //for clearing terminal
 /**
  * @file
- * @brief A system for keeping track of all current orders. 
+ * @brief A system for keeping track of all active orders. 
  * The system also calculates the elevators movements based on this.
  */
+
 #ifndef QUEUE_SYSTEM_H
 #define QUEUE_SYSTEM_H
 #define NUMBER_OF_ORDERS 10
-#define MAX_NUMBER_OF_ACTIONS 20
+#define MAX_NUMBER_OF_ACTIONS 20    //overflødig!!!!!!!!!!!!!!!!!!!!!
 
 /**
  * @brief A type for orders. Specifying floor, type of order and whether the order is active or not.
  */
-
-typedef struct Order {
+typedef struct {
     int floor;
     HardwareOrder order_type;
     int active;
@@ -40,13 +40,11 @@ typedef enum {
  * @param floor the floor related to the order
  * @param order_type the type of order 
  */
-//@Simen
-//void order_activate(Order *order);
 void order_activate(int floor,HardwareOrder order_type);
 
 /**
  * @brief Deactivates all orders for a floor
- * @param current_floor The floor orders should be deactivated for.
+ * @param current_floor The floor the orders should be deactivated for.
  */
 void order_deactivate(int current_floor);
 

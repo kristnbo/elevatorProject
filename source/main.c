@@ -146,8 +146,9 @@ int main(){
         }
 
         //Sets floor and floor lights //Loop?
-        if(hardware_get_floor() != -1){
-            current_floor = hardware_get_floor();
+        int temp = hardware_get_floor();
+        if(temp != -1){
+            current_floor = temp;
             hardware_command_floor_indicator_on(current_floor);
         }
 
