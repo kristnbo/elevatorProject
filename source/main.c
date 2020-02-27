@@ -4,14 +4,17 @@
 #include "order_handler.h"
 #include "timer.h"
 
+
+
+#define DOOR_OPEN_TIME 1
 //Not part of skeleton code, our FSM 
 //State defined in queue_system
 /*
 typedef enum {
     UP,
     DOWN,
+    DOOR_OPEN,
     IDLE,
-    WAITING,
     EMERGENCY_STOP   
 } State;
 
@@ -64,11 +67,11 @@ static void print_status(int current_floor,State last_state, State state, int sh
         case DOWN:
             printf("Last state: DOWN");
             break;
+        case DOOR_OPEN:
+            printf("Last state: DOOR_OPEN");
+            break;
         case IDLE:
             printf("Last state: IDLE");
-            break;
-        case WAITING:
-            printf("Last state: WAITING");
             break;
         case EMERGENCY_STOP:
             printf("Last state: EMERGENCY_STOP");
@@ -85,11 +88,11 @@ static void print_status(int current_floor,State last_state, State state, int sh
         case DOWN:
             printf("\tCurrent state: DOWN");
             break;
+        case DOOR_OPEN:
+            printf("\tCurrent state: DOOR_OPEN");
+            break;
         case IDLE:
             printf("\tCurrent state: IDLE");
-            break;
-        case WAITING:
-            printf("\tCurrent state: WAITING");
             break;
         case EMERGENCY_STOP:
             printf("\tCurrent state: EMERGENCY_STOP");
@@ -117,8 +120,7 @@ int main(){
     State state = DOWN;
     State last_state = DOWN;
     int state_repeated = 0;
-    //above is commented out since its not used yet, resulting in a make error
-    //int above = 1;
+    int above = 1;
 
    
     hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
@@ -127,7 +129,7 @@ int main(){
         current_floor = hardware_get_floor();
     }
     last_state = state;
-    state = WAITING;
+    state = IDLE;
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 
 //end init_routine
@@ -135,11 +137,21 @@ int main(){
     while(1){
         //Check stop signal
         if(hardware_read_stop_signal()){
-            if(state!=EMERGENCY_STOP && state!=WAITING){
+            if(state == UP || state == DOWN){
                 last_state=state;
+                
             }
             state = EMERGENCY_STOP;
+            state_repeated=0; 
         }
+
+        //Sets floor and floor lights //Loop?
+        if(hardware_get_floor() != -1){
+            current_floor = hardware_get_floor();
+            hardware_command_floor_indicator_on(current_floor);
+        }
+
+
         //Check all order buttons
         check_for_order();
         
@@ -149,110 +161,93 @@ int main(){
         case UP:
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
             if(hardware_get_floor() != -1){
-                //above = 1; 
+                above = 1; 
             }
-               
-            if(hardware_get_floor() != -1 && hardware_get_floor() != current_floor){
+            
+            if(hardware_get_floor() != -1){    
                 last_state = state;
-                state  = WAITING;
+                state  = IDLE;
             }
             break;
+
         case DOWN:
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
             if(hardware_get_floor() != -1){
-                //above = 0; 
+                above = 0; 
             }
 
-            if(hardware_get_floor() != -1 && hardware_get_floor() != current_floor){
+            if(hardware_get_floor() != -1){
                 last_state = state;
-                state = WAITING;
+                state = IDLE;
             }
             break;
-        case IDLE:
+
+        case DOOR_OPEN:
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
-            clear_order(current_floor);
+            order_deactivate(current_floor);
             clear_floor_order_lights(current_floor);
 
             if(!state_repeated){
                 state_repeated = 1;
-                timer_start(3);
+                timer_start(DOOR_OPEN_TIME);
                 hardware_command_door_open(1);
             }
-            if(check_timeout() == 1){
+            if(check_timeout()){
                 hardware_command_door_open(0);
-                state = WAITING;
+                state = IDLE;
                 state_repeated = 0;
 
             }
-            else if(hardware_read_obstruction_signal() == 1){
-                timer_start(3);
+            else if(hardware_read_obstruction_signal()){
+                timer_start(DOOR_OPEN_TIME);
                 hardware_command_door_open(1);
             }
-
             break;
+
         case EMERGENCY_STOP:
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             hardware_command_stop_light(hardware_read_stop_signal());
 
             if(hardware_get_floor() != -1 && !state_repeated){
-                timer_start(3);
+                timer_start(DOOR_OPEN_TIME);
                 hardware_command_door_open(1);
                 state_repeated = 1;
             }
 
             if(hardware_read_obstruction_signal() && !check_timeout()){
-                timer_start(3);
+                timer_start(DOOR_OPEN_TIME);
             }
 
-            clear_all_orders();
+            order_deactivate_all();
             clear_all_order_lights();
             if(!hardware_read_stop_signal() && check_timeout()){
-                state = WAITING;
+                state = IDLE;
                 state_repeated = 0;
                 hardware_command_stop_light(0);
                 hardware_command_door_open(0);
             }
             break;
-        case WAITING:
-            hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 
+        case IDLE:
             if(state_repeated){
-                last_state = WAITING;
+                last_state = IDLE;
+                hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             }
             
             state_repeated = 1;
-            state = request_action(state,last_state,current_floor);
-            if (state != WAITING){
+            state = request_action(state,last_state,current_floor, above);
+            if (state != IDLE){
                 state_repeated = 0;
             }
             break;
+
         default:
             break;
         }
-        //Update floor and floor lights
-        if(hardware_get_floor() != -1){
-            current_floor = hardware_get_floor();
-            hardware_command_floor_indicator_on(current_floor);
-        }
-        
-
-        //Update all order lights
-        for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){
-            if(hardware_read_order(f, HARDWARE_ORDER_INSIDE)){
-                hardware_command_order_light(f, HARDWARE_ORDER_INSIDE, 1);
-            }
-
-            if(hardware_read_order(f, HARDWARE_ORDER_UP)){
-                hardware_command_order_light(f, HARDWARE_ORDER_UP, 1);
-            }
-
-            if(hardware_read_order(f, HARDWARE_ORDER_DOWN)){
-                hardware_command_order_light(f, HARDWARE_ORDER_DOWN, 1);
-            }
-        }
+ 
 
         //Terminal sugar
-        print_status(current_floor,last_state,state,0);
+        print_status(current_floor,last_state,state,1);
         
     }
 

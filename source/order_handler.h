@@ -1,6 +1,9 @@
 #include "hardware.h"
 #include "queue_system.h"
 
+#ifndef ORDER_HANDLER_H
+#define ORDER_HANDLER_H
+
 
 /**
  * @file
@@ -17,4 +20,4 @@
  */
 int check_for_order();
 
-
+#endif

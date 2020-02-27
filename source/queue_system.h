@@ -23,30 +23,37 @@ typedef struct Order {
 
 
 /**
- * @brief The state type found in main.
+ * @brief The state type found in main. 
  */
 typedef enum {
     UP,
     DOWN,
+    DOOR_OPEN,
     IDLE,
-    WAITING,
-    EMERGENCY_STOP,
-    IGNORE
+    EMERGENCY_STOP
+
 } State;
 
 
 /**
  * @brief Activates an order in the order_array.
+ * @param floor the floor related to the order
+ * @param order_type the type of order 
  */
-void order_activate(Order *order);
+//@Simen
+//void order_activate(Order *order);
+void order_activate(int floor,HardwareOrder order_type);
 
 /**
- * @brief Deactivates all orders for a floor, by setting active to zero. 
+ * @brief Deactivates all orders for a floor
  * @param current_floor The floor orders should be deactivated for.
  */
-void order_deactivate(int current_floor,Order *order_array);
+void order_deactivate(int current_floor);
 
-void clear_order(int current_floor);
+/**
+ * @brief Sets active to 0 for all orders in order_array.
+ */
+void order_deactivate_all();
 
 /**
  * @brief Prints all orders with floor and type, and shows whether they are active or not.
@@ -60,14 +67,11 @@ void print_orders();
  * @brief Fetches next action, and updates the order array by deleting all completed orders.
  * @return FSM new state.
  */
-State request_action(State state, State last_state, int current_floor);
+State request_action(State state, State last_state, int current_floor, int above);
 
 
 
-/**
- * @brief Sets active to 0 for all orders in order_array.
- */
-void clear_all_orders();
+
 
 
 

@@ -1,80 +1,45 @@
-//Simen
-Flere for løkker går gjennom buttons som om det var 12 ikke ti
 
-Tror mange FAT stop-bugs kan fikses med å bruke get_floor ikke current_floor
+//Spørsmål 
+Er det greit å endre hardware.c
 
 For å få includes til å gi mening må struct Order ligge i queue system, burde order_handler og queue system være samme modul?
 
-Trenger vi max antall actions define, tror det blir 11 men må diskuteres
+Må crrent floor settes i en løkke eller noe liknede
 
-Skal order_activate kalle på calculate action, siden denne kunn skal skje når det trykkes på knapper?
-
-Rare feil kan dukke opp hvis man ikke kjører make clean
-
-Order array skal initialiseres finere, med en ignore*antall
-
-//Notater til calculate:
-
-ROTETE AT CALCULATE FJERNER ORDRE TIL NÅVÆRENDE ETASJE
-SJEKK STATE, hvis IDLE må den første idle gjøres til ignore
-MÅ ALLTID SJEKKE AT SISTE ER IDLE, EVT SETTE DEN TIL DET
-Genererer en copy av alle ordre, denne kopien jobbes gjennom
-Kan det lønne seg å ha en variabl aktiv i struct order som kan settes, slik at dersom
-den er høy skal den tas hensyn til, ellers ikke. Er surrete å legge til og 
-fjerne fra array ettersom det ikke er standard 
-Må da ha en queue init()
-
-Funker ikke med å fylle action med 0, så må lage en state ignore
-
-MAX_NUMBER_ORDERS bør fjere max fra den
-order_array_length er foreldet
-update_order_array er jo get next action
-
-Klarer ikke en etasje opp
-
-//BUGS
-hvis du skal til en endeetasje og har opp og ned aktiv på etasjen før blir de håndtert etterpå
-er timeren ikk på 3sek men nærmere 4?
-kan stoppe og plutselig være i etasje -1 fordi sensor er litt rar(kan fikses med en if setning)
-dersom man er i 1. og trykker 3.opp stopper den først i andre...
-etter stop kan man ikke "Snu" og kjøre tilbake
-får ikke lov å gjøre noen bestillinger til en etasje den nettopp har forlatt
-hvis noen trykker på opp eller ned i en etasje der døren alt er åpen holdes den oppe i 6sek evt 9 for begge knappene
-dør lyset oppfører seg rart
-
-
-
-//Emergency stop
-kan ikke fortsette motsatt vei av det den gjorde før Emergency stop
-
-
-//Variabler jeg er misfornøyd med
-floor_lowest
-floor_highest
-order_activate (burde være order_add)
-order_deactivate
-
-
-//Spørsmål 
 Skal stop ignoreres ved oppstart?
-Skal stop lys på når obstruksjon er på?
+
 Viktig! Hvis det er en opp og ned bestilling i en etasje antar
 man kun at en går på? Virker sånn på magic command.
+
 hvordan skal order og action array dokumenteres, de ligger kun i c-fil
 Kolbjørn sa FSM burde ligge i main, men queue_system trenger å kjenne til
 enum state. men kan ikke inkludere main.c, what to do?
 
+//Notes
+Hva gjør static funksjoner, ligger noen av dem i main
+Endre FSM-diagram så req_action bare kalles i IDLE
+
+Teste obstructed
+
 //magic command [NOT PERFECT/ Stopp mellom etasjer bug]
 wget -O- www.itk.ntnu.no/heis.sh| sh
 
-//FAT-status
-2.1 Oppstart: 100%
 
-2.2 Håndtering av bestillinger: 
-H1
-H2
-H3 Sletter alle bestillinger til en etasje det stoppes i 100%
-H4 Om heisen ikke har bestillinger skal den stå stille 100%
+//UpDownCalc BUGS
 
-2.3 Bestillingslys og etasjelys: 100%
-2.4 
+
+
+
+
+
+kan stoppe heisen i bevegelse med å trykke en knapp i etasjen, er det cool?
+
+
+
+
+
+
+
+
+
+
