@@ -71,13 +71,11 @@ int hardware_read_obstruction_signal();
 int hardware_read_floor_sensor(int floor);
 
 /**
- * @brief Polls all floor sensors
+ * @brief Polls all floor sensors.
  *
- * 
- *
- * @return value of floor (zero-based) otherwise -1;
+ * @return Value of current floor (zero-based), otherwise -1.
  */
-int hardware_get_floor();
+int hardware_command_get_floor();
 
 /**
  * @brief Polls the hardware for the status of orders from

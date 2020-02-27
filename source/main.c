@@ -107,26 +107,25 @@ static void print_status(int current_floor,State last_state, State state, int sh
 
 
 int main(){
+    signal(SIGINT, sigint_handler);
+
+//Init_routine
+
     int error = hardware_init();    
     if(error != 0){
         fprintf(stderr, "Unable to initialize hardware\n");
         exit(1);
     }
 
-    signal(SIGINT, sigint_handler);
-
-
- //Init_routine
     State state = DOWN;
     State last_state = DOWN;
     int state_repeated = 0;
     int above = 1;
-
    
     hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-    int current_floor=hardware_get_floor();
+    int current_floor = hardware_command_get_floor();
     while(current_floor == -1){
-        current_floor = hardware_get_floor();
+        current_floor = hardware_command_get_floor();
     }
     last_state = state;
     state = IDLE;
@@ -145,27 +144,26 @@ int main(){
             state_repeated=0; 
         }
 
-        //Sets floor and floor lights //Loop?
-        int temp = hardware_get_floor();
+        //Sets floor and floor lights
+        int temp = hardware_command_get_floor();
         if(temp != -1){
             current_floor = temp;
-            hardware_command_floor_indicator_on(current_floor);
         }
 
 
         //Check all order buttons
-        check_for_order();
+        order_update();
         
         //FSM 
         switch (state)
         {
         case UP:
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
-            if(hardware_get_floor() != -1){
+            if(hardware_command_get_floor() != -1){
                 above = 1; 
             }
             
-            if(hardware_get_floor() != -1){    
+            if(hardware_command_get_floor() != -1){    
                 last_state = state;
                 state  = IDLE;
             }
@@ -173,11 +171,11 @@ int main(){
 
         case DOWN:
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-            if(hardware_get_floor() != -1){
+            if(hardware_command_get_floor() != -1){
                 above = 0; 
             }
 
-            if(hardware_get_floor() != -1){
+            if(hardware_command_get_floor() != -1){
                 last_state = state;
                 state = IDLE;
             }
@@ -209,7 +207,7 @@ int main(){
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             hardware_command_stop_light(hardware_read_stop_signal());
 
-            if(hardware_get_floor() != -1 && !state_repeated){
+            if(hardware_command_get_floor() != -1 && !state_repeated){
                 timer_start(DOOR_OPEN_TIME);
                 hardware_command_door_open(1);
                 state_repeated = 1;
@@ -230,13 +228,14 @@ int main(){
             break;
 
         case IDLE:
+            hardware_command_floor_indicator_on(current_floor);
             if(state_repeated){
                 last_state = IDLE;
                 hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             }
             
             state_repeated = 1;
-            state = request_action(state,last_state,current_floor, above);
+            state = request_state(state, last_state, current_floor, above);
             if (state != IDLE){
                 state_repeated = 0;
             }
