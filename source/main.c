@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
-#include "order_handler.h"
+#include "order_system.h"
 #include "timer.h"
 
 
@@ -19,35 +19,6 @@ typedef enum {
 } State;
 
 */
-
-static void clear_all_order_lights(){
-    HardwareOrder order_types[3] = {
-        HARDWARE_ORDER_UP,
-        HARDWARE_ORDER_INSIDE,
-        HARDWARE_ORDER_DOWN
-    };
-
-    for(int f = 0; f < HARDWARE_NUMBER_OF_FLOORS; f++){
-        for(int i = 0; i < 3; i++){
-            HardwareOrder type = order_types[i];
-            hardware_command_order_light(f, type, 0);
-        }
-    }
-}
-//Our function
-static void clear_floor_order_lights(int floor){
-    HardwareOrder order_types[3] = {
-        HARDWARE_ORDER_UP,
-        HARDWARE_ORDER_INSIDE,
-        HARDWARE_ORDER_DOWN
-    };
-
-    
-    for(int i = 0; i < 3; i++){
-        HardwareOrder type = order_types[i];
-        hardware_command_order_light(floor, type, 0);
-    }  
-}
 
 static void sigint_handler(int sig){
     (void)(sig);
@@ -116,16 +87,16 @@ int main(){
         fprintf(stderr, "Unable to initialize hardware\n");
         exit(1);
     }
-
+    //legge dette over main????????????
     State state = DOWN;
     State last_state = DOWN;
     int state_repeated = 0;
     int above = 1;
    
     hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-    int current_floor = hardware_command_get_floor();
+    int current_floor = hardware_read_all_floor_sensors();
     while(current_floor == -1){
-        current_floor = hardware_command_get_floor();
+        current_floor = hardware_read_all_floor_sensors();
     }
     last_state = state;
     state = IDLE;
@@ -145,7 +116,7 @@ int main(){
         }
 
         //Sets floor and floor lights
-        int temp = hardware_command_get_floor();
+        int temp = hardware_read_all_floor_sensors();
         if(temp != -1){
             current_floor = temp;
         }
@@ -159,11 +130,11 @@ int main(){
         {
         case UP:
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
-            if(hardware_command_get_floor() != -1){
+            if(hardware_read_all_floor_sensors() != -1){
                 above = 1; 
             }
             
-            if(hardware_command_get_floor() != -1){    
+            if(hardware_read_all_floor_sensors() != -1){    
                 last_state = state;
                 state  = IDLE;
             }
@@ -171,11 +142,11 @@ int main(){
 
         case DOWN:
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
-            if(hardware_command_get_floor() != -1){
+            if(hardware_read_all_floor_sensors() != -1){
                 above = 0; 
             }
 
-            if(hardware_command_get_floor() != -1){
+            if(hardware_read_all_floor_sensors() != -1){
                 last_state = state;
                 state = IDLE;
             }
@@ -184,14 +155,14 @@ int main(){
         case DOOR_OPEN:
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             order_deactivate(current_floor);
-            clear_floor_order_lights(current_floor);
+            hardware_command_clear_floor_order_lights(current_floor);
 
             if(!state_repeated){
                 state_repeated = 1;
                 timer_start(DOOR_OPEN_TIME);
                 hardware_command_door_open(1);
             }
-            if(check_timeout()){
+            if(timer_check_timeout()){
                 hardware_command_door_open(0);
                 state = IDLE;
                 state_repeated = 0;
@@ -207,19 +178,19 @@ int main(){
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             hardware_command_stop_light(hardware_read_stop_signal());
 
-            if(hardware_command_get_floor() != -1 && !state_repeated){
+            if(hardware_read_all_floor_sensors() != -1 && !state_repeated){
                 timer_start(DOOR_OPEN_TIME);
                 hardware_command_door_open(1);
                 state_repeated = 1;
             }
 
-            if(hardware_read_obstruction_signal() && !check_timeout()){
+            if(hardware_read_obstruction_signal() && !timer_check_timeout()){
                 timer_start(DOOR_OPEN_TIME);
             }
 
             order_deactivate_all();
-            clear_all_order_lights();
-            if(!hardware_read_stop_signal() && check_timeout()){
+            hardware_command_clear_all_order_lights();
+            if(!hardware_read_stop_signal() && timer_check_timeout()){
                 state = IDLE;
                 state_repeated = 0;
                 hardware_command_stop_light(0);
@@ -235,7 +206,7 @@ int main(){
             }
             
             state_repeated = 1;
-            state = request_state(state, last_state, current_floor, above);
+            state = order_request_state(state, last_state, current_floor, above);
             if (state != IDLE){
                 state_repeated = 0;
             }

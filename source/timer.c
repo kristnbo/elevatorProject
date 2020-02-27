@@ -11,7 +11,7 @@ void timer_start(int duration){
     timeout_timestamp = time(NULL)+duration;
 
 }
-int check_timeout(){
+int timer_check_timeout(){
     if(time(NULL) > timeout_timestamp){
         return 1;
     }

@@ -75,7 +75,7 @@ int hardware_read_floor_sensor(int floor);
  *
  * @return Value of current floor (zero-based), otherwise -1.
  */
-int hardware_command_get_floor();
+int hardware_read_all_floor_sensors();
 
 /**
  * @brief Polls the hardware for the status of orders from
@@ -117,7 +117,6 @@ void hardware_command_floor_indicator_on(int floor);
  */
 void hardware_command_stop_light(int on);
 
-
 /**
  * @brief Sets the light in a button corresponding to an order
  * of type @p order_type, at floor @p floor.
@@ -128,5 +127,17 @@ void hardware_command_stop_light(int on);
  * 0 to turn it off.
  */
 void hardware_command_order_light(int floor, HardwareOrder order_type, int on);
+
+/**
+ * @brief Clears all order lights for floor @p floor.
+ * 
+ * @param floor The floor of the order indicators.
+ */
+void hardware_command_clear_floor_order_lights(int floor);
+
+/**
+ * @brief Clears all order lights.
+ */
+void hardware_command_clear_all_order_lights();
 
 #endif

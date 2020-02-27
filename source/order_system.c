@@ -1,4 +1,4 @@
-#include "order_handler.h"
+#include "order_system.h"
 #include <stdio.h> 
 
 //The structure of this array must be preserved 
@@ -26,9 +26,11 @@ void order_activate(int floor, HardwareOrder order_type){
     }
 }
 
-void order_deactivate(int current_floor){
-    for(Order* o=order_array;o<&order_array[NUMBER_OF_ORDERS];o++){
-        if(o->floor==current_floor){o->active=0;}
+void order_deactivate(int floor){
+    for(int i = 0; i < NUMBER_OF_ORDERS; i++){
+        if(order_array[i].floor == floor){
+            order_array[i].active = 0;
+        }
     }
 }
 
@@ -91,7 +93,7 @@ void print_orders(){
     
 }
 
-State request_state(State state, State last_state, int current_floor, int above){
+State order_request_state(State state, State last_state, int current_floor, int above){
     
     int active_order_exist = 0;
     for(int i =0;i<NUMBER_OF_ORDERS;i++){
@@ -102,7 +104,7 @@ State request_state(State state, State last_state, int current_floor, int above)
     if(!active_order_exist){return IDLE;}
 
     //If IDLE between floors
-    if(hardware_command_get_floor() == -1 && last_state==IDLE){   
+    if(hardware_read_all_floor_sensors() == -1 && last_state==IDLE){   
         for(int i =0;i<NUMBER_OF_ORDERS;i++){
             if(order_array[i].active){
                 if(order_array[i].floor > current_floor){
@@ -119,10 +121,10 @@ State request_state(State state, State last_state, int current_floor, int above)
         }   
     }
     //in order to not stop if elevator just left floor so floor == -1, but state == IDLE
-    if(hardware_command_get_floor() == -1){
+    if(hardware_read_all_floor_sensors() == -1){
         return last_state;
     }   
-    if(hardware_command_get_floor() != -1){
+    if(hardware_read_all_floor_sensors() != -1){
         if(last_state == IDLE){
             for(int i = 0; i < NUMBER_OF_ORDERS; i++){
                 if(order_array[i].active){

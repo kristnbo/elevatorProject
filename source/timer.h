@@ -8,7 +8,7 @@
 
 
 /**
- * @brief Starts the timer with a given duration
+ * @brief Starts the timer with duration @p duration.
  * @param duration The duration of the timer, given in seconds.
  */
 void timer_start(int duration);
@@ -17,6 +17,6 @@ void timer_start(int duration);
  * @brief Checks if timer is timed out.
  * @return 1 if timed out, else 0.
  */
-int check_timeout();
+int timer_check_timeout();
 
 #endif 

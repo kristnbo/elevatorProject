@@ -36,25 +36,26 @@ typedef enum {
 
 
 /**
- * @brief Activates an order in the order_array.
- * @param floor the floor related to the order
- * @param order_type the type of order 
+ * @brief Activates an order from floor @p floor of order typre @p order_type in the order_array.
+ * 
+ * @param floor The floor of the order.
+ * @param order_type  
  */
 void order_activate(int floor,HardwareOrder order_type);
 
 /**
- * @brief Deactivates all orders for a floor.
- * @param current_floor The floor the orders should be deactivated for.
+ * @brief Deactivates all orders for floor @p floor in the order_array.
+ * @param floor The floor the orders should be deactivated for.
  */
-void order_deactivate(int current_floor);
+void order_deactivate(int floor);
 
 /**
- * @brief Deactivates all orders in order_array.
+ * @brief Deactivates all orders in the order_array.
  */
 void order_deactivate_all();
 
 /**
- * @brief Polls the hardware for pressed order-buttons, activates orders based on this. 
+ * @brief Polls the hardware for pressed order-buttons and activates corresponding orders in the order array. 
  */
 void order_update();
 
@@ -68,10 +69,10 @@ void print_orders();
 
 
 /**
- * @brief Fetches next action, and updates the order array by deleting all completed orders.
+ * @brief Fetches next state, and updates the order_array by deleting all handeled orders.
  * @return FSM new state.
  */
-State request_state(State state, State last_state, int current_floor, int above);
+State order_request_state(State state, State last_state, int current_floor, int above);
 
 
 
