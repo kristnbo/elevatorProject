@@ -4,13 +4,13 @@
 
 
 
-time_t timeout_timestamp=0;
+time_t timeout_timestamp = 0;
 
 
 void timer_start(int duration){
-    timeout_timestamp = time(NULL)+duration;
-
+    timeout_timestamp = time(NULL) + duration;
 }
+
 int timer_check_timeout(){
     if(time(NULL) > timeout_timestamp){
         return 1;
