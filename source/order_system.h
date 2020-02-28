@@ -23,7 +23,7 @@ typedef struct {
 
 
 /**
- * @brief The state type found in main. 
+ * @brief The states of the elevator. 
  */
 typedef enum {
     STATE_UP,

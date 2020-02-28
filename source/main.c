@@ -6,7 +6,7 @@
 
 
 
-#define DOOR_OPEN_TIME 1
+#define DOOR_OPEN_TIME 3
 
 
 static void sigint_handler(int sig){
@@ -76,7 +76,7 @@ int main(){
         fprintf(stderr, "Unable to initialize hardware\n");
         exit(1);
     }
-    //legge dette over main????????????
+    
     State state = STATE_DOWN;
     State last_state = STATE_DOWN;
     int state_repeated = 0;
@@ -87,6 +87,7 @@ int main(){
     while(current_floor == -1){
         current_floor = hardware_read_all_floor_sensors();
     }
+
     last_state = state;
     state = STATE_IDLE;
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
@@ -101,7 +102,7 @@ int main(){
                 
             }
             state = STATE_EMERGENCY_STOP;
-            state_repeated=0; 
+            state_repeated = 0; 
         }
 
         //Sets floor and floor lights
@@ -181,6 +182,7 @@ int main(){
             hardware_command_clear_all_order_lights();
             if(!hardware_read_stop_signal() && timer_check_timeout()){
                 state = STATE_IDLE;
+                last_state = STATE_IDLE;
                 state_repeated = 0;
                 hardware_command_stop_light(0);
                 hardware_command_door_open(0);

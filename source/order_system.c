@@ -35,24 +35,24 @@ void order_deactivate(int floor){
 }
 
 void order_deactivate_all(){
-    for(int i = 0;i<NUMBER_OF_ORDERS;i++){
-        order_array[i].active=0;
+    for(int i = 0; i < NUMBER_OF_ORDERS; i++){
+        order_array[i].active = 0;
     }
 }
 
 void order_update(){
     for(int i=0;i<HARDWARE_NUMBER_OF_FLOORS;i++){
-        if(hardware_read_order(i,HARDWARE_ORDER_UP)){
-            order_activate(i,HARDWARE_ORDER_UP);
-            hardware_command_order_light(i,HARDWARE_ORDER_UP,1);
+        if(hardware_read_order(i, HARDWARE_ORDER_UP)){
+            order_activate(i, HARDWARE_ORDER_UP);
+            hardware_command_order_light(i, HARDWARE_ORDER_UP, 1);
         }
-        if(hardware_read_order(i,HARDWARE_ORDER_DOWN)){
-            order_activate(i,HARDWARE_ORDER_DOWN);
-            hardware_command_order_light(i,HARDWARE_ORDER_DOWN,1); 
+        if(hardware_read_order(i, HARDWARE_ORDER_DOWN)){
+            order_activate(i, HARDWARE_ORDER_DOWN);
+            hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 1); 
         }
         if(hardware_read_order(i,HARDWARE_ORDER_INSIDE)){
-            order_activate(i,HARDWARE_ORDER_INSIDE);
-            hardware_command_order_light(i,HARDWARE_ORDER_INSIDE,1);  
+            order_activate(i, HARDWARE_ORDER_INSIDE);
+            hardware_command_order_light(i, HARDWARE_ORDER_INSIDE, 1);  
         }
     }
 
@@ -104,8 +104,8 @@ State order_request_state(State state, State last_state, int current_floor, int 
     if(!active_order_exist){return STATE_IDLE;}
 
     //If STATE_IDLE between floors
-    if(hardware_read_all_floor_sensors() == -1 && last_state==STATE_IDLE){   
-        for(int i =0;i<NUMBER_OF_ORDERS;i++){
+    if(hardware_read_all_floor_sensors() == -1 && last_state == STATE_IDLE){   
+        for(int i = 0; i < NUMBER_OF_ORDERS; i++){
             if(order_array[i].active){
                 if(order_array[i].floor > current_floor){
                     return STATE_UP;
@@ -120,6 +120,7 @@ State order_request_state(State state, State last_state, int current_floor, int 
             }
         }   
     }
+
     //in order to not stop if elevator just left floor so floor == -1, but state == STATE_IDLE
     if(hardware_read_all_floor_sensors() == -1){
         return last_state;
@@ -166,12 +167,9 @@ State order_request_state(State state, State last_state, int current_floor, int 
                 return STATE_DOOR_OPEN;
             }
         }
-        //finished moving in current direction
-        return STATE_IDLE;
     }
-    //@Simen
-    //Should default if between floors be the last_state? So that it wont turn abdruptly after leaving a floor..
-    return last_state;
+    //finished moving in current direction
+    return STATE_IDLE;
 }
 
 
