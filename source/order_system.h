@@ -26,11 +26,11 @@ typedef struct {
  * @brief The state type found in main. 
  */
 typedef enum {
-    UP,
-    DOWN,
-    DOOR_OPEN,
-    IDLE,
-    EMERGENCY_STOP
+    STATE_UP,
+    STATE_DOWN,
+    STATE_DOOR_OPEN,
+    STATE_IDLE,
+    STATE_EMERGENCY_STOP
 
 } State;
 

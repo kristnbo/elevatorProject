@@ -7,18 +7,7 @@
 
 
 #define DOOR_OPEN_TIME 1
-//Not part of skeleton code, our FSM 
-//State defined in queue_system
-/*
-typedef enum {
-    UP,
-    DOWN,
-    DOOR_OPEN,
-    IDLE,
-    EMERGENCY_STOP   
-} State;
 
-*/
 
 static void sigint_handler(int sig){
     (void)(sig);
@@ -32,20 +21,20 @@ static void print_status(int current_floor,State last_state, State state, int sh
         print_orders();
         switch (last_state)
         {
-        case UP:
-            printf("Last state: UP");
+        case STATE_UP:
+            printf("Last state: STATE_UP");
             break;
-        case DOWN:
-            printf("Last state: DOWN");
+        case STATE_DOWN:
+            printf("Last state: STATE_DOWN");
             break;
-        case DOOR_OPEN:
-            printf("Last state: DOOR_OPEN");
+        case STATE_DOOR_OPEN:
+            printf("Last state: STATE_DOOR_OPEN");
             break;
-        case IDLE:
-            printf("Last state: IDLE");
+        case STATE_IDLE:
+            printf("Last state: STATE_IDLE");
             break;
-        case EMERGENCY_STOP:
-            printf("Last state: EMERGENCY_STOP");
+        case STATE_EMERGENCY_STOP:
+            printf("Last state: STATE_EMERGENCY_STOP");
             break;
         
         default:
@@ -53,20 +42,20 @@ static void print_status(int current_floor,State last_state, State state, int sh
         }
         switch (state)
         {
-        case UP:
-            printf("\tCurrent state: UP");
+        case STATE_UP:
+            printf("\tCurrent state: STATE_UP");
             break;
-        case DOWN:
-            printf("\tCurrent state: DOWN");
+        case STATE_DOWN:
+            printf("\tCurrent state: STATE_DOWN");
             break;
-        case DOOR_OPEN:
-            printf("\tCurrent state: DOOR_OPEN");
+        case STATE_DOOR_OPEN:
+            printf("\tCurrent state: STATE_DOOR_OPEN");
             break;
-        case IDLE:
-            printf("\tCurrent state: IDLE");
+        case STATE_IDLE:
+            printf("\tCurrent state: STATE_IDLE");
             break;
-        case EMERGENCY_STOP:
-            printf("\tCurrent state: EMERGENCY_STOP");
+        case STATE_EMERGENCY_STOP:
+            printf("\tCurrent state: STATE_EMERGENCY_STOP");
             break;
         
         default:
@@ -88,8 +77,8 @@ int main(){
         exit(1);
     }
     //legge dette over main????????????
-    State state = DOWN;
-    State last_state = DOWN;
+    State state = STATE_DOWN;
+    State last_state = STATE_DOWN;
     int state_repeated = 0;
     int above = 1;
    
@@ -99,7 +88,7 @@ int main(){
         current_floor = hardware_read_all_floor_sensors();
     }
     last_state = state;
-    state = IDLE;
+    state = STATE_IDLE;
     hardware_command_movement(HARDWARE_MOVEMENT_STOP);
 
 //end init_routine
@@ -107,11 +96,11 @@ int main(){
     while(1){
         //Check stop signal
         if(hardware_read_stop_signal()){
-            if(state == UP || state == DOWN){
+            if(state == STATE_UP || state == STATE_DOWN){
                 last_state=state;
                 
             }
-            state = EMERGENCY_STOP;
+            state = STATE_EMERGENCY_STOP;
             state_repeated=0; 
         }
 
@@ -128,7 +117,7 @@ int main(){
         //FSM 
         switch (state)
         {
-        case UP:
+        case STATE_UP:
             hardware_command_movement(HARDWARE_MOVEMENT_UP);
             if(hardware_read_all_floor_sensors() != -1){
                 above = 1; 
@@ -136,11 +125,11 @@ int main(){
             
             if(hardware_read_all_floor_sensors() != -1){    
                 last_state = state;
-                state  = IDLE;
+                state  = STATE_IDLE;
             }
             break;
 
-        case DOWN:
+        case STATE_DOWN:
             hardware_command_movement(HARDWARE_MOVEMENT_DOWN);
             if(hardware_read_all_floor_sensors() != -1){
                 above = 0; 
@@ -148,11 +137,11 @@ int main(){
 
             if(hardware_read_all_floor_sensors() != -1){
                 last_state = state;
-                state = IDLE;
+                state = STATE_IDLE;
             }
             break;
 
-        case DOOR_OPEN:
+        case STATE_DOOR_OPEN:
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             order_deactivate(current_floor);
             hardware_command_clear_floor_order_lights(current_floor);
@@ -164,7 +153,7 @@ int main(){
             }
             if(timer_check_timeout()){
                 hardware_command_door_open(0);
-                state = IDLE;
+                state = STATE_IDLE;
                 state_repeated = 0;
 
             }
@@ -174,7 +163,7 @@ int main(){
             }
             break;
 
-        case EMERGENCY_STOP:
+        case STATE_EMERGENCY_STOP:
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             hardware_command_stop_light(hardware_read_stop_signal());
 
@@ -191,23 +180,23 @@ int main(){
             order_deactivate_all();
             hardware_command_clear_all_order_lights();
             if(!hardware_read_stop_signal() && timer_check_timeout()){
-                state = IDLE;
+                state = STATE_IDLE;
                 state_repeated = 0;
                 hardware_command_stop_light(0);
                 hardware_command_door_open(0);
             }
             break;
 
-        case IDLE:
+        case STATE_IDLE:
             hardware_command_floor_indicator_on(current_floor);
             if(state_repeated){
-                last_state = IDLE;
+                last_state = STATE_IDLE;
                 hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             }
             
             state_repeated = 1;
             state = order_request_state(state, last_state, current_floor, above);
-            if (state != IDLE){
+            if (state != STATE_IDLE){
                 state_repeated = 0;
             }
             break;

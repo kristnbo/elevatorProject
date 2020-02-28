@@ -101,73 +101,73 @@ State order_request_state(State state, State last_state, int current_floor, int 
             active_order_exist = 1;
         }
     }
-    if(!active_order_exist){return IDLE;}
+    if(!active_order_exist){return STATE_IDLE;}
 
-    //If IDLE between floors
-    if(hardware_read_all_floor_sensors() == -1 && last_state==IDLE){   
+    //If STATE_IDLE between floors
+    if(hardware_read_all_floor_sensors() == -1 && last_state==STATE_IDLE){   
         for(int i =0;i<NUMBER_OF_ORDERS;i++){
             if(order_array[i].active){
                 if(order_array[i].floor > current_floor){
-                    return UP;
+                    return STATE_UP;
                 }
                 if(order_array[i].floor < current_floor){
-                    return DOWN;
+                    return STATE_DOWN;
                 }
                 if (above){
-                    return DOWN;
+                    return STATE_DOWN;
                 }
-                return UP;
+                return STATE_UP;
             }
         }   
     }
-    //in order to not stop if elevator just left floor so floor == -1, but state == IDLE
+    //in order to not stop if elevator just left floor so floor == -1, but state == STATE_IDLE
     if(hardware_read_all_floor_sensors() == -1){
         return last_state;
     }   
     if(hardware_read_all_floor_sensors() != -1){
-        if(last_state == IDLE){
+        if(last_state == STATE_IDLE){
             for(int i = 0; i < NUMBER_OF_ORDERS; i++){
                 if(order_array[i].active){
                     if(order_array[i].floor > current_floor){
-                        return UP;
+                        return STATE_UP;
                     }
                     if(order_array[i].floor < current_floor){
-                        return DOWN;
+                        return STATE_DOWN;
                     }
-                    return DOOR_OPEN;
+                    return STATE_DOOR_OPEN;
                 }
             }
         }
         //stopping at floor to continue in same direction
         for(int i = 0; i < NUMBER_OF_ORDERS; i++){
             if(order_array[i].floor == current_floor && order_array[i].active){
-                if(last_state == UP && order_array[i].order_type != HARDWARE_ORDER_DOWN){
-                    return DOOR_OPEN;
+                if(last_state == STATE_UP && order_array[i].order_type != HARDWARE_ORDER_DOWN){
+                    return STATE_DOOR_OPEN;
                 }
-                if(last_state == DOWN && order_array[i].order_type != HARDWARE_ORDER_UP){
-                    return DOOR_OPEN;
+                if(last_state == STATE_DOWN && order_array[i].order_type != HARDWARE_ORDER_UP){
+                    return STATE_DOOR_OPEN;
                 }
             }
         }
         //continues in same direction
         for(int i = 0; i < NUMBER_OF_ORDERS; i++){
             if(order_array[i].active){
-                if(last_state == DOWN && order_array[i].floor < current_floor){
-                    return DOWN;
+                if(last_state == STATE_DOWN && order_array[i].floor < current_floor){
+                    return STATE_DOWN;
                 }
-                if(last_state == UP && order_array[i].floor > current_floor){
-                    return UP;
+                if(last_state == STATE_UP && order_array[i].floor > current_floor){
+                    return STATE_UP;
                 }
             }
         }
         //no further orders in same direction
         for(int i = 0; i < NUMBER_OF_ORDERS; i++){
             if(order_array[i].floor==current_floor && order_array[i].active){
-                return DOOR_OPEN;
+                return STATE_DOOR_OPEN;
             }
         }
         //finished moving in current direction
-        return IDLE;
+        return STATE_IDLE;
     }
     //@Simen
     //Should default if between floors be the last_state? So that it wont turn abdruptly after leaving a floor..
