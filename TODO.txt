@@ -1,4 +1,5 @@
-
+//BUGS
+kan kuke med å kjøre opp og ned mange ganger i stop. 
 //Spørsmål 
 
 Må crrent floor settes i en løkke eller noe liknede
