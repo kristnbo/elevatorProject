@@ -58,41 +58,6 @@ void order_update(){
 
 }
 
-void print_orders(){
-    printf("\033[H\033[J"); //Clears linux terminal
-    for(int i = NUMBER_OF_ORDERS-1; i >-1;i--)
-    {
-        printf("Floor %d",order_array[i].floor+1);
-        switch (order_array[i].order_type)
-        {
-        case HARDWARE_ORDER_DOWN:
-            printf(" with order type Down");
-            break;
-        case HARDWARE_ORDER_UP:
-            printf(" with order type Up   ");
-            break;
-        case HARDWARE_ORDER_INSIDE:
-            printf(" with order type Inside");
-            break;
-        
-        default:
-            break;
-        }
-        if(order_array[i].active){
-            printf(" is \t ");
-            printf("\033[0;32m ACTIVE\n");
-            printf("\033[0m");
-        }
-        else{
-            printf(" is \t ");
-            printf("\033[0;31m DECTIVATED\n");
-            printf("\033[0m");
-        }
-        printf("\n");
-    }
-    
-}
-
 State order_request_state(State state, State last_state, int current_floor, int above){
     
     int active_order_exist = 0;

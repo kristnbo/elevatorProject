@@ -59,15 +59,6 @@ void order_deactivate_all();
  */
 void order_update();
 
-
-/**
- * @brief Prints all orders with floor and type, and shows whether they are active or not.
- */
-void print_orders();
-
-
-
-
 /**
  * @brief Fetches next state, and updates the order_array by deleting all handeled orders.
  * @return FSM new state.

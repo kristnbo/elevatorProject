@@ -16,55 +16,6 @@ static void sigint_handler(int sig){
     exit(0);
 }
 
-static void print_status(int current_floor,State last_state, State state, int show){
-    if(show){
-        print_orders();
-        switch (last_state)
-        {
-        case STATE_UP:
-            printf("Last state: STATE_UP");
-            break;
-        case STATE_DOWN:
-            printf("Last state: STATE_DOWN");
-            break;
-        case STATE_DOOR_OPEN:
-            printf("Last state: STATE_DOOR_OPEN");
-            break;
-        case STATE_IDLE:
-            printf("Last state: STATE_IDLE");
-            break;
-        case STATE_EMERGENCY_STOP:
-            printf("Last state: STATE_EMERGENCY_STOP");
-            break;
-        
-        default:
-            break;
-        }
-        switch (state)
-        {
-        case STATE_UP:
-            printf("\tCurrent state: STATE_UP");
-            break;
-        case STATE_DOWN:
-            printf("\tCurrent state: STATE_DOWN");
-            break;
-        case STATE_DOOR_OPEN:
-            printf("\tCurrent state: STATE_DOOR_OPEN");
-            break;
-        case STATE_IDLE:
-            printf("\tCurrent state: STATE_IDLE");
-            break;
-        case STATE_EMERGENCY_STOP:
-            printf("\tCurrent state: STATE_EMERGENCY_STOP");
-            break;
-        
-        default:
-            break;
-        }
-        printf("\t Current floor: %d.floor\n",current_floor+1);
-    }
-}  
-
 
 int main(){
     signal(SIGINT, sigint_handler);
@@ -204,12 +155,6 @@ int main(){
         default:
             break;
         }
- 
-
-        //Terminal sugar
-        print_status(current_floor,last_state,state,1);
-        
     }
-
     return 0;
 }
