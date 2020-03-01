@@ -21,6 +21,7 @@ void order_activate(int floor, HardwareOrder order_type){
     for(int i = 0; i < NUMBER_OF_ORDERS; i++){
         if(order_array[i].floor == floor && order_array[i].order_type == order_type){
             order_array[i].active = 1;
+            hardware_command_order_light(floor, order_type, 1);
             return;
         }
     }
@@ -30,6 +31,7 @@ void order_deactivate(int floor){
     for(int i = 0; i < NUMBER_OF_ORDERS; i++){
         if(order_array[i].floor == floor){
             order_array[i].active = 0;
+            hardware_command_order_light(floor, order_array[i].order_type, 0);
         }
     }
 }
@@ -37,6 +39,7 @@ void order_deactivate(int floor){
 void order_deactivate_all(){
     for(int i = 0; i < NUMBER_OF_ORDERS; i++){
         order_array[i].active = 0;
+        hardware_command_order_light(order_array[i].floor, order_array[i].order_type, 0);
     }
 }
 
@@ -44,15 +47,12 @@ void order_update(){
     for(int i=0;i<HARDWARE_NUMBER_OF_FLOORS;i++){
         if(hardware_read_order(i, HARDWARE_ORDER_UP)){
             order_activate(i, HARDWARE_ORDER_UP);
-            hardware_command_order_light(i, HARDWARE_ORDER_UP, 1);
         }
         if(hardware_read_order(i, HARDWARE_ORDER_DOWN)){
             order_activate(i, HARDWARE_ORDER_DOWN);
-            hardware_command_order_light(i, HARDWARE_ORDER_DOWN, 1); 
         }
         if(hardware_read_order(i,HARDWARE_ORDER_INSIDE)){
-            order_activate(i, HARDWARE_ORDER_INSIDE);
-            hardware_command_order_light(i, HARDWARE_ORDER_INSIDE, 1);  
+            order_activate(i, HARDWARE_ORDER_INSIDE);  
         }
     }
 

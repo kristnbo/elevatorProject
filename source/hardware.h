@@ -128,16 +128,4 @@ void hardware_command_stop_light(int on);
  */
 void hardware_command_order_light(int floor, HardwareOrder order_type, int on);
 
-/**
- * @brief Clears all order lights for floor @p floor.
- * 
- * @param floor The floor of the order indicators.
- */
-void hardware_command_clear_floor_order_lights(int floor);
-
-/**
- * @brief Clears all order lights.
- */
-void hardware_command_clear_all_order_lights();
-
 #endif

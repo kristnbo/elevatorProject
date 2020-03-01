@@ -145,7 +145,6 @@ int main(){
         case STATE_DOOR_OPEN:
             hardware_command_movement(HARDWARE_MOVEMENT_STOP);
             order_deactivate(current_floor);
-            hardware_command_clear_floor_order_lights(current_floor);
 
             if(!state_repeated){
                 state_repeated = 1;
@@ -179,7 +178,6 @@ int main(){
             }
 
             order_deactivate_all();
-            hardware_command_clear_all_order_lights();
             if(!hardware_read_stop_signal() && timer_check_timeout()){
                 state = STATE_IDLE;
                 last_state = STATE_IDLE;
