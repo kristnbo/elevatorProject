@@ -1,6 +1,5 @@
 #include "hardware.h"
 
-#include <stdio.h> //for clearing terminal
 /**
  * @file
  * @brief A system for keeping track of all active orders. 
@@ -36,10 +35,10 @@ typedef enum {
 
 
 /**
- * @brief Activates an order from floor @p floor of order typre @p order_type in the order_array.
+ * @brief Activates an order from floor @p floor of order type @p order_type in the order_array.
  * 
  * @param floor The floor of the order.
- * @param order_type  
+ * @param order_type The type of order.  
  */
 void order_activate(int floor,HardwareOrder order_type);
 
@@ -55,15 +54,18 @@ void order_deactivate(int floor);
 void order_deactivate_all();
 
 /**
- * @brief Polls the hardware for pressed order-buttons and activates corresponding orders in the order array. 
+ * @brief Polls the hardware for pressed order-buttons and activates corresponding orders in the order_array. 
  */
 void order_update();
 
 /**
- * @brief Fetches next state, and updates the order_array by deleting all handeled orders.
+ * @brief Calculates next state, and updates the order_array by deleting all handled orders.
+ * @param last_state The last state of the FSM.
+ * @param current_floor The current floor of the elevator.
+ * @param above A variable indicating whether the elevator is above or below @p current_floor.
  * @return FSM new state.
  */
-State order_request_state(State state, State last_state, int current_floor, int above);
+State order_request_state(State last_state, int current_floor, int above);
 
 
 

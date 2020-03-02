@@ -16,6 +16,7 @@ void timer_start(int duration);
 /**
  * @brief Checks if timer is timed out.
  * @return 1 if timed out, else 0.
+ * @warning Returns zero if the timer has not yet been started.
  */
 int timer_check_timeout();
 

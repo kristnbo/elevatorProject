@@ -1,0 +1,116 @@
+\hypertarget{order__system_8h}{}\section{source/order\+\_\+system.h File Reference}
+\label{order__system_8h}\index{source/order\+\_\+system.\+h@{source/order\+\_\+system.\+h}}
+
+
+A system for keeping track of all active orders. The system also calculates the elevators movements based on this.  
+
+
+{\ttfamily \#include \char`\"{}hardware.\+h\char`\"{}}\newline
+Include dependency graph for order\+\_\+system.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structOrder}{Order}
+\begin{DoxyCompactList}\small\item\em A type for orders. Specifying floor, type of order and whether the order is active or not. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{order__system_8h_a737083ef6aae7fcbf7b755e0add99b16}\label{order__system_8h_a737083ef6aae7fcbf7b755e0add99b16}} 
+\#define {\bfseries N\+U\+M\+B\+E\+R\+\_\+\+O\+F\+\_\+\+O\+R\+D\+E\+RS}~10
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{order__system_8h_a5d74787dedbc4e11c1ab15bf487e61f8}\label{order__system_8h_a5d74787dedbc4e11c1ab15bf487e61f8}} 
+enum \hyperlink{order__system_8h_a5d74787dedbc4e11c1ab15bf487e61f8}{State} \{ \newline
+{\bfseries S\+T\+A\+T\+E\+\_\+\+UP}, 
+{\bfseries S\+T\+A\+T\+E\+\_\+\+D\+O\+WN}, 
+{\bfseries S\+T\+A\+T\+E\+\_\+\+D\+O\+O\+R\+\_\+\+O\+P\+EN}, 
+{\bfseries S\+T\+A\+T\+E\+\_\+\+I\+D\+LE}, 
+\newline
+{\bfseries S\+T\+A\+T\+E\+\_\+\+E\+M\+E\+R\+G\+E\+N\+C\+Y\+\_\+\+S\+T\+OP}
+ \}\begin{DoxyCompactList}\small\item\em The states of the elevator. \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{order__system_8h_a2efdc1d37a2f440d99db51652dac7b93}{order\+\_\+activate} (int floor, \hyperlink{hardware_8h_a796a8de8ce0ae769d7dbd3327a7bdbe7}{Hardware\+Order} order\+\_\+type)
+\begin{DoxyCompactList}\small\item\em Activates an order from floor {\ttfamily floor} of order type {\ttfamily order\+\_\+type} in the order\+\_\+array. \end{DoxyCompactList}\item 
+void \hyperlink{order__system_8h_a74134236d7cfc76367898f06686de4e2}{order\+\_\+deactivate} (int floor)
+\begin{DoxyCompactList}\small\item\em Deactivates all orders for floor {\ttfamily floor} in the order\+\_\+array. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{order__system_8h_a9479d4eb72fe8cbefb7eb43e23b2cb2c}\label{order__system_8h_a9479d4eb72fe8cbefb7eb43e23b2cb2c}} 
+void \hyperlink{order__system_8h_a9479d4eb72fe8cbefb7eb43e23b2cb2c}{order\+\_\+deactivate\+\_\+all} ()
+\begin{DoxyCompactList}\small\item\em Deactivates all orders in the order\+\_\+array. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{order__system_8h_aa3930b60fafeda8aef41867576da4165}\label{order__system_8h_aa3930b60fafeda8aef41867576da4165}} 
+void \hyperlink{order__system_8h_aa3930b60fafeda8aef41867576da4165}{order\+\_\+update} ()
+\begin{DoxyCompactList}\small\item\em Polls the hardware for pressed order-\/buttons and activates corresponding orders in the order array. \end{DoxyCompactList}\item 
+\hyperlink{order__system_8h_a5d74787dedbc4e11c1ab15bf487e61f8}{State} \hyperlink{order__system_8h_a88504a41b32496601ff10383817e55b0}{order\+\_\+request\+\_\+state} (\hyperlink{order__system_8h_a5d74787dedbc4e11c1ab15bf487e61f8}{State} last\+\_\+state, int current\+\_\+floor, int above)
+\begin{DoxyCompactList}\small\item\em Fetches next state, and updates the order\+\_\+array by deleting all handeled orders. Parametere!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A system for keeping track of all active orders. The system also calculates the elevators movements based on this. 
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{order__system_8h_a2efdc1d37a2f440d99db51652dac7b93}\label{order__system_8h_a2efdc1d37a2f440d99db51652dac7b93}} 
+\index{order\+\_\+system.\+h@{order\+\_\+system.\+h}!order\+\_\+activate@{order\+\_\+activate}}
+\index{order\+\_\+activate@{order\+\_\+activate}!order\+\_\+system.\+h@{order\+\_\+system.\+h}}
+\subsubsection{\texorpdfstring{order\+\_\+activate()}{order\_activate()}}
+{\footnotesize\ttfamily void order\+\_\+activate (\begin{DoxyParamCaption}\item[{int}]{floor,  }\item[{\hyperlink{hardware_8h_a796a8de8ce0ae769d7dbd3327a7bdbe7}{Hardware\+Order}}]{order\+\_\+type }\end{DoxyParamCaption})}
+
+
+
+Activates an order from floor {\ttfamily floor} of order type {\ttfamily order\+\_\+type} in the order\+\_\+array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em floor} & The floor of the order. \\
+\hline
+{\em order\+\_\+type} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 20 of file order\+\_\+system.\+c.
+
+\mbox{\Hypertarget{order__system_8h_a74134236d7cfc76367898f06686de4e2}\label{order__system_8h_a74134236d7cfc76367898f06686de4e2}} 
+\index{order\+\_\+system.\+h@{order\+\_\+system.\+h}!order\+\_\+deactivate@{order\+\_\+deactivate}}
+\index{order\+\_\+deactivate@{order\+\_\+deactivate}!order\+\_\+system.\+h@{order\+\_\+system.\+h}}
+\subsubsection{\texorpdfstring{order\+\_\+deactivate()}{order\_deactivate()}}
+{\footnotesize\ttfamily void order\+\_\+deactivate (\begin{DoxyParamCaption}\item[{int}]{floor }\end{DoxyParamCaption})}
+
+
+
+Deactivates all orders for floor {\ttfamily floor} in the order\+\_\+array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em floor} & The floor the orders should be deactivated for. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 30 of file order\+\_\+system.\+c.
+
+\mbox{\Hypertarget{order__system_8h_a88504a41b32496601ff10383817e55b0}\label{order__system_8h_a88504a41b32496601ff10383817e55b0}} 
+\index{order\+\_\+system.\+h@{order\+\_\+system.\+h}!order\+\_\+request\+\_\+state@{order\+\_\+request\+\_\+state}}
+\index{order\+\_\+request\+\_\+state@{order\+\_\+request\+\_\+state}!order\+\_\+system.\+h@{order\+\_\+system.\+h}}
+\subsubsection{\texorpdfstring{order\+\_\+request\+\_\+state()}{order\_request\_state()}}
+{\footnotesize\ttfamily \hyperlink{order__system_8h_a5d74787dedbc4e11c1ab15bf487e61f8}{State} order\+\_\+request\+\_\+state (\begin{DoxyParamCaption}\item[{\hyperlink{order__system_8h_a5d74787dedbc4e11c1ab15bf487e61f8}{State}}]{last\+\_\+state,  }\item[{int}]{current\+\_\+floor,  }\item[{int}]{above }\end{DoxyParamCaption})}
+
+
+
+Fetches next state, and updates the order\+\_\+array by deleting all handeled orders. Parametere!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+
+\begin{DoxyReturn}{Returns}
+F\+SM new state. 
+\end{DoxyReturn}
+
+
+Definition at line 61 of file order\+\_\+system.\+c.
+

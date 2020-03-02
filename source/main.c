@@ -46,7 +46,6 @@ int main(){
 //end init_routine
 
     while(1){
-        //Check stop signal
         if(hardware_read_stop_signal()){
             if(state == STATE_UP || state == STATE_DOWN){
                 last_state=state;
@@ -56,17 +55,13 @@ int main(){
             state_repeated = 0; 
         }
 
-        //Sets floor and floor lights
         int temp = hardware_read_all_floor_sensors();
         if(temp != -1){
             current_floor = temp;
         }
 
-
-        //Check all order buttons
         order_update();
-        
-        //FSM 
+    
         switch (state)
         {
         case STATE_UP:
@@ -146,7 +141,7 @@ int main(){
             }
             
             state_repeated = 1;
-            state = order_request_state(state, last_state, current_floor, above);
+            state = order_request_state(last_state, current_floor, above);
             if (state != STATE_IDLE){
                 state_repeated = 0;
             }

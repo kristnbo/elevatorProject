@@ -100,7 +100,7 @@ Enumerations</h2></td></tr>
 <tr class="memitem:a796a8de8ce0ae769d7dbd3327a7bdbe7"><td class="memItemLeft" align="right" valign="top"><a id="a796a8de8ce0ae769d7dbd3327a7bdbe7"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hardware_8h.html#a796a8de8ce0ae769d7dbd3327a7bdbe7">HardwareOrder</a> { <b>HARDWARE_ORDER_UP</b>, 
 <b>HARDWARE_ORDER_INSIDE</b>, 
 <b>HARDWARE_ORDER_DOWN</b>
- }<tr class="memdesc:a796a8de8ce0ae769d7dbd3327a7bdbe7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structOrder.html" title="Common type for orders. ">Order</a> type used in <code>hardware_read_order</code> and in <code>hardware_command_order_light</code>. <br /></td></tr>
+ }<tr class="memdesc:a796a8de8ce0ae769d7dbd3327a7bdbe7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structOrder.html" title="A type for orders. Specifying floor, type of order and whether the order is active or not...">Order</a> type used in <code>hardware_read_order</code> and in <code>hardware_command_order_light</code>. <br /></td></tr>
 </td></tr>
 <tr class="separator:a796a8de8ce0ae769d7dbd3327a7bdbe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -121,9 +121,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ab048489e6302bb5604aad753f2d7d501"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hardware_8h.html#ab048489e6302bb5604aad753f2d7d501">hardware_read_floor_sensor</a> (int floor)</td></tr>
 <tr class="memdesc:ab048489e6302bb5604aad753f2d7d501"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls the floor sensor for the given <code>floor</code>.  <a href="#ab048489e6302bb5604aad753f2d7d501">More...</a><br /></td></tr>
 <tr class="separator:ab048489e6302bb5604aad753f2d7d501"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ba05c4794176f8fcfcd1efb90564326"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hardware_8h.html#a7ba05c4794176f8fcfcd1efb90564326">hardware_read_all_floor_sensors</a> ()</td></tr>
-<tr class="memdesc:a7ba05c4794176f8fcfcd1efb90564326"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls all floor sensors.  <a href="#a7ba05c4794176f8fcfcd1efb90564326">More...</a><br /></td></tr>
-<tr class="separator:a7ba05c4794176f8fcfcd1efb90564326"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3c3fee158a845c2fbf7012bbb7eb700"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hardware_8h.html#ad3c3fee158a845c2fbf7012bbb7eb700">hardware_read_all_floor_sensors</a> ()</td></tr>
+<tr class="memdesc:ad3c3fee158a845c2fbf7012bbb7eb700"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls all floor sensors.  <a href="#ad3c3fee158a845c2fbf7012bbb7eb700">More...</a><br /></td></tr>
+<tr class="separator:ad3c3fee158a845c2fbf7012bbb7eb700"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87917f3aa093fb46ca821a400d011ee8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hardware_8h.html#a87917f3aa093fb46ca821a400d011ee8">hardware_read_order</a> (int floor, <a class="el" href="hardware_8h.html#a796a8de8ce0ae769d7dbd3327a7bdbe7">HardwareOrder</a> order_type)</td></tr>
 <tr class="memdesc:a87917f3aa093fb46ca821a400d011ee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Polls the hardware for the status of orders from floor <code>floor</code> of type <code>order_type</code>.  <a href="#a87917f3aa093fb46ca821a400d011ee8">More...</a><br /></td></tr>
 <tr class="separator:a87917f3aa093fb46ca821a400d011ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -296,26 +296,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a7ba05c4794176f8fcfcd1efb90564326"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ba05c4794176f8fcfcd1efb90564326">&#9670;&nbsp;</a></span>hardware_read_all_floor_sensors()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int hardware_read_all_floor_sensors </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Polls all floor sensors. </p>
-<dl class="section return"><dt>Returns</dt><dd>value of floor (zero-based) otherwise -1; </dd></dl>
-
-</div>
-</div>
 <a id="a054b8fb8768311d46be58d6a4890d771"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a054b8fb8768311d46be58d6a4890d771">&#9670;&nbsp;</a></span>hardware_init()</h2>
 
@@ -333,6 +313,26 @@ Functions</h2></td></tr>
 
 <p>Initializes the elevator control hardware. Must be called once before other calls to the elevator hardware driver. </p>
 <dl class="section return"><dt>Returns</dt><dd>0 on success. Non-zero for failure. </dd></dl>
+
+</div>
+</div>
+<a id="ad3c3fee158a845c2fbf7012bbb7eb700"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3c3fee158a845c2fbf7012bbb7eb700">&#9670;&nbsp;</a></span>hardware_read_all_floor_sensors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int hardware_read_all_floor_sensors </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Polls all floor sensors. </p>
+<dl class="section return"><dt>Returns</dt><dd>Value of current floor (zero-based), otherwise -1. </dd></dl>
 
 </div>
 </div>

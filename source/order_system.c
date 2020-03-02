@@ -1,7 +1,6 @@
 #include "order_system.h"
 #include <stdio.h> 
 
-//The structure of this array must be preserved 
 Order order_array[NUMBER_OF_ORDERS]=
 {
     {0,HARDWARE_ORDER_UP,0},
@@ -58,7 +57,7 @@ void order_update(){
 
 }
 
-State order_request_state(State state, State last_state, int current_floor, int above){
+State order_request_state(State last_state, int current_floor, int above){
     
     int active_order_exist = 0;
     for(int i =0;i<NUMBER_OF_ORDERS;i++){
@@ -68,7 +67,7 @@ State order_request_state(State state, State last_state, int current_floor, int 
     }
     if(!active_order_exist){return STATE_IDLE;}
 
-    //If STATE_IDLE between floors
+
     if(hardware_read_all_floor_sensors() == -1 && last_state == STATE_IDLE){   
         for(int i = 0; i < NUMBER_OF_ORDERS; i++){
             if(order_array[i].active){
@@ -86,7 +85,8 @@ State order_request_state(State state, State last_state, int current_floor, int 
         }   
     }
 
-    //in order to not stop if elevator just left floor so floor == -1, but state == STATE_IDLE
+
+    //If the elevator just left the floor sensor range, so floor == -1, state could be STATE_IDLE, but should be a moving state.
     if(hardware_read_all_floor_sensors() == -1){
         return last_state;
     }   
@@ -104,7 +104,7 @@ State order_request_state(State state, State last_state, int current_floor, int 
                 }
             }
         }
-        //stopping at floor to continue in same direction
+        //Stopping at floor to continue in same direction
         for(int i = 0; i < NUMBER_OF_ORDERS; i++){
             if(order_array[i].floor == current_floor && order_array[i].active){
                 if(last_state == STATE_UP && order_array[i].order_type != HARDWARE_ORDER_DOWN){
@@ -115,7 +115,7 @@ State order_request_state(State state, State last_state, int current_floor, int 
                 }
             }
         }
-        //continues in same direction
+        //Continues in same direction without stopping
         for(int i = 0; i < NUMBER_OF_ORDERS; i++){
             if(order_array[i].active){
                 if(last_state == STATE_DOWN && order_array[i].floor < current_floor){
@@ -126,14 +126,14 @@ State order_request_state(State state, State last_state, int current_floor, int 
                 }
             }
         }
-        //no further orders in same direction
+        //No further orders in the current direction
         for(int i = 0; i < NUMBER_OF_ORDERS; i++){
             if(order_array[i].floor==current_floor && order_array[i].active){
                 return STATE_DOOR_OPEN;
             }
         }
     }
-    //finished moving in current direction
+    //The elevator has to repeat STATE_IDLE in order to turn
     return STATE_IDLE;
 }
 
